@@ -1,53 +1,51 @@
 #include <iostream>
 #include <graphics.h>
 #include <ctime>
-//#include <windows.h>
 using namespace std;
 
 struct
 {
-    int seconds;
-    int minutes;
-    int hours;
+    int secunde;
+    int minute;
+    int ore;
 } ceas;
 
-void getTime()
+void iaTimpulLocal()
 {
     time_t t = time(NULL);
-    tm *timePtr = localtime(&t); // stores the local time of the computer.
-    ceas.seconds = (timePtr->tm_sec);
-    ceas.minutes = (timePtr->tm_min);
-    ceas.hours = (timePtr->tm_hour);
+    tm *timePtr = localtime(&t); // ia timpul local al calculatorului
+    ceas.secunde = (timePtr->tm_sec);
+    ceas.minute = (timePtr->tm_min);
+    ceas.ore = (timePtr->tm_hour);
 }
 
-void displayTime()
+void scrieTimpul()
 {
     while (true)
     {
         cleardevice(); //sterge consola
+        //stilizare
         setcolor(9);
         settextstyle(3, HORIZ_DIR,7 );
-       // bgiout<<"Ora este ";
         outstreamxy(50,50);
-        bgiout << "      " << ceas.hours << " : " << ceas.minutes << " : " << ceas.seconds << " " << endl; ;
+
+        bgiout << "      " << ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl; ;
         outstreamxy(150, 150);
-        //increment sec min and hours
-        ceas.seconds++;
-        if (ceas.seconds >= 60)
+        //incrementeaza sec min si ore
+        ceas.secunde++;
+        if (ceas.secunde >= 60)
         {
-            ceas.seconds = 1;
-            ceas.minutes++;
+            ceas.secunde = 1;
+            ceas.minute++;
         }
-        // This increases the minutes
-        if (ceas.minutes >= 60)
+        if (ceas.minute >= 60)
         {
-            ceas.minutes = 0;
-            ceas.hours++;
+            ceas.minute = 0;
+            ceas.ore++;
         }
-        // This increases the hours
-        if (ceas.hours > 24)
+        if (ceas.ore > 24)
         {
-            ceas.hours= 00;
+            ceas.ore= 00;
         }
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
     }
@@ -55,8 +53,9 @@ void displayTime()
 int main()
 {
     initwindow(800,600);
-    getTime();
-    displayTime();
+
+    iaTimpulLocal();
+    scrieTimpul();
 
     getch();
     closegraph();
