@@ -1,7 +1,7 @@
 #include <iostream>
 #include <graphics.h>
 #include <ctime>
-#include <windows.h>
+//#include <windows.h>
 using namespace std;
 
 struct
@@ -20,16 +20,17 @@ void getTime()
     ceas.hours = (timePtr->tm_hour);
 }
 
-displayTime()
+void displayTime()
 {
     while (true)
     {
-        cleardevice();
-        bgiout<<"Ora este ";
+        cleardevice(); //sterge consola
+        setcolor(9);
+        settextstyle(3, HORIZ_DIR,7 );
+       // bgiout<<"Ora este ";
         outstreamxy(50,50);
-
         bgiout << "      " << ceas.hours << " : " << ceas.minutes << " : " << ceas.seconds << " " << endl; ;
-        outstreamxy(100, 100);
+        outstreamxy(150, 150);
         //increment sec min and hours
         ceas.seconds++;
         if (ceas.seconds >= 60)
@@ -48,18 +49,12 @@ displayTime()
         {
             ceas.hours= 00;
         }
-
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
     }
 }
-
 int main()
 {
-
-
-
     initwindow(800,600);
-
     getTime();
     displayTime();
 
