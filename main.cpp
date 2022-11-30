@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <winbgim.h>
 #include <stdlib.h>
@@ -82,8 +81,8 @@ void deseneazaMeniul()
 {
     setcolor(WHITE);
     rectangle(0,150,getmaxx(),getmaxy());
-    setcolor(LIGHTBLUE);
-    setfillstyle(SOLID_FILL,LIGHTCYAN);
+   // setcolor(LIGHTBLUE);
+  //  setfillstyle(SOLID_FILL,LIGHTCYAN);
     int i;
     for (i=1; i<=nrButoane; i++)
     {
@@ -111,7 +110,7 @@ void deseneazaMeniul()
         }
         rectangle(B[i].D.SS.x, B[i].D.SS.y,B[i].D.DJ.x,B[i].D.DJ.y);
         bar(B[i].D.SS.x, B[i].D.SS.y+30, B[i].D.DJ.x, B[i].D.SS.y);
-        setbkcolor(LIGHTCYAN);
+      //  setbkcolor(LIGHTCYAN);
         outtextxy(B[i].D.SS.x+25,B[i].D.SS.y+10,B[i].text);
     }
 }
