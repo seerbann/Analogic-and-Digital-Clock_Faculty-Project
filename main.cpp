@@ -17,6 +17,14 @@ struct dreptunghi
     punct SS, DJ;
 };
 
+struct
+{
+    int secunde;
+    int minute;
+    int ore;
+} ceas;
+
+
 bool apartine(punct P, dreptunghi D)
 {
     return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
@@ -86,13 +94,6 @@ int butonAles()
     return 0;
 }
 
-struct
-{
-    int secunde;
-    int minute;
-    int ore;
-} ceas;
-
 void iaTimpulLocal()
 {
     time_t t = time(NULL);
@@ -108,15 +109,34 @@ void afisMeniuDigital()
     outtextxy(18,12,"<-");
 }
 
+bool apartineDigital(punct P)
+{
+    return 10<=P.x && P.x<=40 && 10<=P.y && P.y<=30;
+}
+
+int iesireMeniuDigital()
+{
+    punct p;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p.x=mousex();
+        p.y=mousey();
+        if (apartineDigital(p))
+            return 1;
+    }
+    return 0;
+}
 
 void scrieTimpul()
 {
-    while (true)
+    int k=1;
+    while (k)
     {
         setbkcolor(1);
         cleardevice(); //sterge consola
         //stilizare
-       // setcolor(9);
+        // setcolor(9);
         //settextstyle(3, HORIZ_DIR,7 );
         //outstreamxy(50,50);
         afisMeniuDigital();
@@ -139,19 +159,23 @@ void scrieTimpul()
             ceas.ore= 00;
         }
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
+        if(iesireMeniuDigital()!=0)
+            k=0;
     }
 }
 
 int main()
 {
+    const int paginaMeniului=0;
+    const int paginaCeasDigital=1;
+
     initwindow(900,600);
     deseneazaMeniul();
-    setactivepage(1);
-    iaTimpulLocal();
+    setactivepage(paginaMeniului);
+
     int comanda, butonul_apasat;
     do
     {
-
         butonul_apasat=butonAles();
         if (butonul_apasat!=0)
         {
@@ -160,12 +184,13 @@ int main()
 
             if(comanda==3)
             {
-                setactivepage(2);
-                setvisualpage(2);
+                setactivepage(paginaCeasDigital);
+                setvisualpage(paginaCeasDigital);
+                iaTimpulLocal();
                 scrieTimpul();
+                setvisualpage(paginaMeniului);
             }
         }
-
     }
     while (comanda!=5);
     // getch();
