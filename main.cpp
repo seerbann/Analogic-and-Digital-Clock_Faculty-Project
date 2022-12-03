@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <ctime>
 #include <math.h>
-using namespace std;
-
 #define PI 3.1415
+
+using namespace std;
 
 struct punct
 {
@@ -24,19 +24,18 @@ struct
     int ore;
 } ceas;
 
-
-bool apartine(punct P, dreptunghi D)
-{
-    return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
-
-}
-
 struct buton
 {
     dreptunghi D;
     int culoare;
     char text[20];
 };
+
+bool apartine(punct P, dreptunghi D)
+{
+    return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
+
+}
 
 buton B[6];
 int nrButoane=5;
@@ -244,7 +243,6 @@ int main()
                 cout<<"[INFO]Afisare ceas analogic."<<endl;
                 setactivepage(paginaCeasAnalogic);
                 setvisualpage(paginaCeasAnalogic);
-                iaTimpulLocal();
                 afiseazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
             }
