@@ -41,10 +41,8 @@ buton B[6];
 int nrButoane=5;
 void deseneazaMeniul()
 {
-    setcolor(WHITE);
-    rectangle(0,150,getmaxx(),getmaxy());
-    setcolor(LIGHTBLUE);
-    setfillstyle(SOLID_FILL,LIGHTCYAN);
+    setcolor(BLACK);
+    setfillstyle(SOLID_FILL,LIGHTRED);
     int i;
     for (i=1; i<=nrButoane; i++)
     {
@@ -72,7 +70,7 @@ void deseneazaMeniul()
         }
         rectangle(B[i].D.SS.x, B[i].D.SS.y,B[i].D.DJ.x,B[i].D.DJ.y);
         bar(B[i].D.SS.x, B[i].D.SS.y+30, B[i].D.DJ.x, B[i].D.SS.y);
-        setbkcolor(LIGHTCYAN);
+        setbkcolor(LIGHTRED);
         outtextxy(B[i].D.SS.x+25,B[i].D.SS.y+10,B[i].text);
     }
 }
@@ -134,12 +132,9 @@ void scrieTimpulDigital()
     int k=1;
     while (k)
     {
-        setbkcolor(1);
+        setbkcolor(BLACK);
         cleardevice(); //sterge consola
-        //stilizare
-        // setcolor(9);
-        //settextstyle(3, HORIZ_DIR,7 );
-        //outstreamxy(50,50);
+        setcolor(WHITE);
         afisCasutaIesire();
         bgiout << "      " << ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl; ;
         outstreamxy(370, 270);
@@ -161,7 +156,11 @@ void scrieTimpulDigital()
         }
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
         if(intoarcereMeniuPrincipal()!=0)
+        {
             k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+
     }
 }
 
@@ -169,9 +168,9 @@ void scrieTimpulDigital()
 void afiseazaCeasAnalogic()
 {
     int k=1;
-     while(k)
+    while(k)
     {
-        setbkcolor(1);
+        setbkcolor(BLACK);
         cleardevice();
         afisCasutaIesire();
         setcolor(WHITE);
@@ -208,7 +207,10 @@ void afiseazaCeasAnalogic()
         line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
         delay(1000);
         if(intoarcereMeniuPrincipal()!=0)
+        {
             k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
     }
 }
 
@@ -246,6 +248,8 @@ int main()
                 afiseazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
             }
+            if(comanda==5)
+                cout<<"[INFO]IESIRE.";
         }
     }
     while (comanda!=5);
