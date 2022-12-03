@@ -2,10 +2,10 @@
 #include <winbgim.h>
 #include <stdlib.h>
 #include <ctime>
+#include <math.h>
 using namespace std;
 
-#define MAX 20
-#define FUNDAL CYAN
+#define PI 3.1415
 
 struct punct
 {
@@ -50,7 +50,7 @@ void deseneazaMeniul()
     for (i=1; i<=nrButoane; i++)
     {
         B[i].D.SS.x=100*i;
-        B[i].D.DJ.x=100*(i+1)-10;
+        B[i].D.DJ.x=100*(i+1)-5;
         B[i].D.SS.y=50;
         B[i].D.DJ.y=80;
         switch(i)
@@ -62,10 +62,10 @@ void deseneazaMeniul()
             strcpy(B[i].text,"Joc");
             break;
         case 3:
-            strcpy(B[i].text,"DIGITAL");
+            strcpy(B[i].text,"Digital");
             break;
         case 4:
-            strcpy(B[i].text,"Alta");
+            strcpy(B[i].text,"Analogic");
             break;
         case 5:
             strcpy(B[i].text,"IESIRE");
@@ -103,18 +103,19 @@ void iaTimpulLocal()
     ceas.ore = (timePtr->tm_hour);
 }
 
-void afisMeniuDigital()
+
+void afisCasutaIesire()
 {
     rectangle(10,10,40,30);
     outtextxy(18,12,"<-");
 }
 
-bool apartineDigital(punct P)
+bool apartineCasutaIesire(punct P)
 {
     return 10<=P.x && P.x<=40 && 10<=P.y && P.y<=30;
 }
 
-int iesireMeniuDigital()
+int intoarcereMeniuPrincipal()
 {
     punct p;
     if (ismouseclick(WM_LBUTTONDOWN))
@@ -122,13 +123,14 @@ int iesireMeniuDigital()
         clearmouseclick(WM_LBUTTONDOWN);
         p.x=mousex();
         p.y=mousey();
-        if (apartineDigital(p))
+        if (apartineCasutaIesire(p))
             return 1;
     }
     return 0;
 }
 
-void scrieTimpul()
+
+void scrieTimpulDigital()
 {
     int k=1;
     while (k)
@@ -139,7 +141,7 @@ void scrieTimpul()
         // setcolor(9);
         //settextstyle(3, HORIZ_DIR,7 );
         //outstreamxy(50,50);
-        afisMeniuDigital();
+        afisCasutaIesire();
         bgiout << "      " << ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl; ;
         outstreamxy(370, 270);
         //incrementeaza sec min si ore
@@ -159,7 +161,54 @@ void scrieTimpul()
             ceas.ore= 00;
         }
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
-        if(iesireMeniuDigital()!=0)
+        if(intoarcereMeniuPrincipal()!=0)
+            k=0;
+    }
+}
+
+
+void afiseazaCeasAnalogic()
+{
+    int k=1;
+     while(k)
+    {
+        setbkcolor(1);
+        cleardevice();
+        afisCasutaIesire();
+        setcolor(WHITE);
+        circle(350,350,200);
+        circle(350,350,5);
+        outtextxy(350+180*sin(PI/6)-5, 350-180*cos(PI/6), "1");
+        outtextxy(350+180*sin(2*PI/6)-5, 350-180*cos(2*PI/6), "2");
+        outtextxy(350+180*sin(3*PI/6)-5, 350-180*cos(3*PI/6), "3");
+        outtextxy(350+180*sin(4*PI/6)-5, 350-180*cos(4*PI/6), "4");
+        outtextxy(350+180*sin(5*PI/6)-5, 350-180*cos(5*PI/6), "5");
+        outtextxy(350+180*sin(6*PI/6)-5, 350-180*cos(6*PI/6), "6");
+        outtextxy(350+180*sin(7*PI/6)-5, 350-180*cos(7*PI/6), "7");
+        outtextxy(350+180*sin(8*PI/6)-5, 350-180*cos(8*PI/6), "8");
+        outtextxy(350+180*sin(9*PI/6)-5, 350-180*cos(9*PI/6), "9");
+        outtextxy(350+180*sin(10*PI/6)-5, 350-180*cos(10*PI/6), "10");
+        outtextxy(350+180*sin(11*PI/6)-5, 350-180*cos(11*PI/6), "11");
+        outtextxy(350+180*sin(12*PI/6)-5, 350-180*cos(12*PI/6), "12");
+
+        iaTimpulLocal();
+
+        //linia pentru ora
+
+        setcolor(RED);
+        line(350,350,350+150*sin(ceas.ore*PI/6),350-150*cos(ceas.ore*PI/6));
+
+        //linia pentru minute
+
+        setcolor(GREEN);
+        line(350,350,350+190*sin(ceas.minute*PI/30),350-190*cos(ceas.minute*PI/30));
+
+        //linia pentru secunde
+
+        setcolor(WHITE);
+        line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
+        delay(1000);
+        if(intoarcereMeniuPrincipal()!=0)
             k=0;
     }
 }
@@ -168,32 +217,40 @@ int main()
 {
     const int paginaMeniului=0;
     const int paginaCeasDigital=1;
-
+    const int paginaCeasAnalogic=2;
+    int comanda, butonul_apasat;
     initwindow(900,600);
     deseneazaMeniul();
     setactivepage(paginaMeniului);
 
-    int comanda, butonul_apasat;
     do
     {
         butonul_apasat=butonAles();
         if (butonul_apasat!=0)
         {
             comanda=butonul_apasat;
-            cout<<"Comanda "<<comanda<<endl;
-
+            cout<<"[INFO]Comanda "<<comanda<<endl;
             if(comanda==3)
             {
+                cout<<"[INFO]Afisare ceas digital."<<endl;
                 setactivepage(paginaCeasDigital);
                 setvisualpage(paginaCeasDigital);
                 iaTimpulLocal();
-                scrieTimpul();
+                scrieTimpulDigital();
+                setvisualpage(paginaMeniului);
+            }
+            if(comanda==4)
+            {
+                cout<<"[INFO]Afisare ceas analogic."<<endl;
+                setactivepage(paginaCeasAnalogic);
+                setvisualpage(paginaCeasAnalogic);
+                iaTimpulLocal();
+                afiseazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
             }
         }
     }
     while (comanda!=5);
-    // getch();
     closegraph();
     return 0;
 }
