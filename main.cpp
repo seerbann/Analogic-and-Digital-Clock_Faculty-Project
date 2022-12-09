@@ -4,8 +4,13 @@
 #include <ctime>
 #include <math.h>
 #define PI 3.1415
-
+#define paginaMeniului 0
+#define paginaCeasDigital 1
+#define paginaCeasAnalogic 2
+#define paginaSetari 3
 using namespace std;
+
+
 
 struct punct
 {
@@ -27,6 +32,7 @@ struct
 struct buton
 {
     dreptunghi D;
+    dreptunghi D1;
     int culoare;
     char text[20];
 };
@@ -41,10 +47,8 @@ buton B[6];
 int nrButoane=5;
 void deseneazaMeniul()
 {
-    setcolor(WHITE);
-    rectangle(0,150,getmaxx(),getmaxy());
-    setcolor(LIGHTBLUE);
-    setfillstyle(SOLID_FILL,LIGHTCYAN);
+    setcolor(BLACK);
+    setfillstyle(SOLID_FILL,LIGHTRED);
     int i;
     for (i=1; i<=nrButoane; i++)
     {
@@ -72,7 +76,7 @@ void deseneazaMeniul()
         }
         rectangle(B[i].D.SS.x, B[i].D.SS.y,B[i].D.DJ.x,B[i].D.DJ.y);
         bar(B[i].D.SS.x, B[i].D.SS.y+30, B[i].D.DJ.x, B[i].D.SS.y);
-        setbkcolor(LIGHTCYAN);
+        setbkcolor(LIGHTRED);
         outtextxy(B[i].D.SS.x+25,B[i].D.SS.y+10,B[i].text);
     }
 }
@@ -134,12 +138,9 @@ void scrieTimpulDigital()
     int k=1;
     while (k)
     {
-        setbkcolor(1);
+        setbkcolor(BLACK);
         cleardevice(); //sterge consola
-        //stilizare
-        // setcolor(9);
-        //settextstyle(3, HORIZ_DIR,7 );
-        //outstreamxy(50,50);
+        setcolor(WHITE);
         afisCasutaIesire();
         bgiout << "      " << ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl; ;
         outstreamxy(370, 270);
@@ -161,7 +162,10 @@ void scrieTimpulDigital()
         }
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
         if(intoarcereMeniuPrincipal()!=0)
+        {
             k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
     }
 }
 
@@ -169,9 +173,9 @@ void scrieTimpulDigital()
 void afiseazaCeasAnalogic()
 {
     int k=1;
-     while(k)
+    while(k)
     {
-        setbkcolor(1);
+        setbkcolor(BLACK);
         cleardevice();
         afisCasutaIesire();
         setcolor(WHITE);
@@ -208,18 +212,68 @@ void afiseazaCeasAnalogic()
         line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
         delay(1000);
         if(intoarcereMeniuPrincipal()!=0)
+        {
             k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
     }
 }
 
+buton B1[4];
+void deseneazaPaginaSetari()
+{
+
+    setactivepage(paginaSetari);
+    setbkcolor(BLACK);
+    cleardevice();
+    setcolor(WHITE);
+    setfillstyle(SOLID_FILL,LIGHTRED);
+    afisCasutaIesire();
+    for(int i=0; i<=300; i=i+100)
+    {
+        B1[i].D1.SS.x=400;
+        B1[i].D1.DJ.x=500;
+        B1[i].D1.SS.y=150+i;
+        B1[i].D1.DJ.y=200+i;
+        bar(B1[i].D1.SS.x,B1[i].D1.SS.y,B1[i].D1.DJ.x,B1[i].D1.DJ.y);
+        //bar draws a filled-in, rectangular, two-dimensional bar.
+        //The bar is filled using the current fill pattern and fill color. bar does not outline the bar
+        ///deci e ca un dreptunghi doar ca pot sa il stilizezi
+        setbkcolor(LIGHTRED);
+    }
+    outtextxy(402,170,"Anglia");
+    outtextxy(402,270,"Anglia");
+    outtextxy(402,370,"Anglia");
+    outtextxy(402,470,"Anglia");
+
+}
+
+int butonAlesSetari()
+{
+    int i;
+    punct p;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p.x=mousex();
+        p.y=mousey();
+        for (i=1; i<=4; i++)
+            if (apartine(p,B1[i].D1))
+                return i;
+    }
+    return 0;
+}
+
+
+
+
 int main()
 {
-    const int paginaMeniului=0;
-    const int paginaCeasDigital=1;
-    const int paginaCeasAnalogic=2;
-    int comanda, butonul_apasat;
+
+    int comanda, butonul_apasat,buton_apasat_setari;
     initwindow(900,600);
     deseneazaMeniul();
+    deseneazaPaginaSetari();
     setactivepage(paginaMeniului);
 
     do
@@ -228,7 +282,26 @@ int main()
         if (butonul_apasat!=0)
         {
             comanda=butonul_apasat;
-            cout<<"[INFO]Comanda "<<comanda<<endl;
+            if(comanda==1)
+                {
+                    cout<<"[INFO]Afisare setari."<<endl;
+                    setvisualpage(paginaSetari);
+                }
+            while(comanda==1)
+            {                       //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
+                                    //si se misca mai bine asa , nu mai are delayul ala
+                buton_apasat_setari=butonAlesSetari();
+                if(buton_apasat_setari!=0)
+                    cout<<butonAlesSetari<<endl;
+                setfillstyle(SOLID_FILL,LIGHTRED);
+                if(intoarcereMeniuPrincipal()!=0)
+                {
+                    comanda=10; //numar random doar ca sa iasa din while
+                    setvisualpage(paginaMeniului);
+                     cout<<"[INFO]Intoarcere la meniu."<<endl;
+                }
+            }
+
             if(comanda==3)
             {
                 cout<<"[INFO]Afisare ceas digital."<<endl;
@@ -238,6 +311,7 @@ int main()
                 scrieTimpulDigital();
                 setvisualpage(paginaMeniului);
             }
+
             if(comanda==4)
             {
                 cout<<"[INFO]Afisare ceas analogic."<<endl;
@@ -246,6 +320,9 @@ int main()
                 afiseazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
             }
+
+            if(comanda==5)
+                cout<<"[INFO]IESIRE.";
         }
     }
     while (comanda!=5);
