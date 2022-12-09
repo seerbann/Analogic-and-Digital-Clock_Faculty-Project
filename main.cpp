@@ -43,6 +43,12 @@ bool apartine(punct P, dreptunghi D)
 
 }
 
+bool apartine1(punct P, dreptunghi D1)
+{
+    return D1.SS.x<=P.x && P.x<=D1.DJ.x && D1.SS.y<=P.y && P.y<=D1.DJ.y;
+
+}
+
 buton B[6];
 int nrButoane=5;
 void deseneazaMeniul()
@@ -229,39 +235,41 @@ void deseneazaPaginaSetari()
     setcolor(WHITE);
     setfillstyle(SOLID_FILL,LIGHTRED);
     afisCasutaIesire();
-    for(int i=0; i<=300; i=i+100)
+    int i,j;
+    for(i=0,j=0; i<=300; i=i+100,j++)
     {
-        B1[i].D1.SS.x=400;
-        B1[i].D1.DJ.x=500;
-        B1[i].D1.SS.y=150+i;
-        B1[i].D1.DJ.y=200+i;
-        bar(B1[i].D1.SS.x,B1[i].D1.SS.y,B1[i].D1.DJ.x,B1[i].D1.DJ.y);
+        B1[j].D1.SS.x=400;
+        B1[j].D1.DJ.x=500;
+        B1[j].D1.SS.y=150+i;
+        B1[j].D1.DJ.y=200+i;
+        bar(B1[j].D1.SS.x,B1[j].D1.SS.y,B1[j].D1.DJ.x,B1[j].D1.DJ.y);
+        rectangle(B1[j].D1.SS.x,B1[j].D1.SS.y,B1[j].D1.DJ.x,B1[j].D1.DJ.y);
         //bar draws a filled-in, rectangular, two-dimensional bar.
         //The bar is filled using the current fill pattern and fill color. bar does not outline the bar
         ///deci e ca un dreptunghi doar ca pot sa il stilizezi
         setbkcolor(LIGHTRED);
     }
-    outtextxy(402,170,"Anglia");
-    outtextxy(402,270,"Anglia");
-    outtextxy(402,370,"Anglia");
-    outtextxy(402,470,"Anglia");
+    outtextxy(402,170,"Setare1");
+    outtextxy(402,270,"Setare2");
+    outtextxy(402,370,"Setare3");
+    outtextxy(402,470,"Setare4");
 
 }
 
 int butonAlesSetari()
 {
-    int i;
+    int j;
     punct p;
     if (ismouseclick(WM_LBUTTONDOWN))
     {
         clearmouseclick(WM_LBUTTONDOWN);
         p.x=mousex();
         p.y=mousey();
-        for (i=1; i<=4; i++)
-            if (apartine(p,B1[i].D1))
-                return i;
+        for(j=0; j<=3; j++)
+            if (apartine1(p,B1[j].D1))
+                return j;
     }
-    return 0;
+    return -1;
 }
 
 
@@ -270,7 +278,8 @@ int butonAlesSetari()
 int main()
 {
 
-    int comanda, butonul_apasat,buton_apasat_setari;
+    int comanda, butonul_apasat;
+    int comandaSetari,buton_apasat_setari;
     initwindow(900,600);
     deseneazaMeniul();
     deseneazaPaginaSetari();
@@ -283,22 +292,34 @@ int main()
         {
             comanda=butonul_apasat;
             if(comanda==1)
-                {
-                    cout<<"[INFO]Afisare setari."<<endl;
-                    setvisualpage(paginaSetari);
-                }
+            {
+                cout<<"[INFO]Afisare setari."<<endl;
+                setvisualpage(paginaSetari);
+            }
             while(comanda==1)
-            {                       //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
-                                    //si se misca mai bine asa , nu mai are delayul ala
+            {
+                //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
+                //si se misca mai bine asa , nu mai are delayul ala
                 buton_apasat_setari=butonAlesSetari();
-                if(buton_apasat_setari!=0)
-                    cout<<butonAlesSetari<<endl;
-                setfillstyle(SOLID_FILL,LIGHTRED);
+
+                if(buton_apasat_setari!=-1)
+                {
+                    comandaSetari=buton_apasat_setari;
+                    if(comandaSetari==0)
+                        cout<<1<<endl;
+                    if(comandaSetari==1)
+                        cout<<2<<endl;
+                    if(comandaSetari==2)
+                        cout<<3<<endl;
+                    if(comandaSetari==3)
+                        cout<<4<<endl;
+                }
+
                 if(intoarcereMeniuPrincipal()!=0)
                 {
                     comanda=10; //numar random doar ca sa iasa din while
                     setvisualpage(paginaMeniului);
-                     cout<<"[INFO]Intoarcere la meniu."<<endl;
+                    cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
 
