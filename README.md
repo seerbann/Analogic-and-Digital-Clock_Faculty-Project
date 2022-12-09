@@ -6,6 +6,6 @@
 
 ### Images
 
-![alt text](https://github.com/seerbann/proiectCeas/blob/main/examples/3.png?raw=true)
+![alt text](https://github.com/seerbann/Analogic-and-Digital-Clock/blob/main/examples/image_2022-12-10_000417531.png?raw=true)
 
 
