@@ -341,7 +341,11 @@ int main()
                           cout<<"[INFO]Timpul setat pentru Anglia"<<endl;
                         }
                     if(buton_apasat_setari==1)
-                        cout<<2<<endl;
+                    {
+                        regiune=0;
+                        cout<<"[INFO]Timpul setat pentru Romania"<<endl;
+                    }
+
                     if(buton_apasat_setari==2)
                         cout<<3<<endl;
                     if(buton_apasat_setari==3)
