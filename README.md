@@ -1,4 +1,14 @@
+<p align="center">
+# Analogic-and-Digital-Clock
+</p>
+## About  
+ Simple clock program written in C++ with a simple graphic library (Borland Graphics Interface).
 
-# Integrare Meniu
-![alt text](https://github.com/seerbann/proiectCeas/blob/main/examples/1.png?raw=true)
+
+
+
+### Images
+
+
+
 
