@@ -2,7 +2,10 @@
 
 ## About  
  Simple clock program written in C++ with a simple graphic library (Borland Graphics Interface).
-
+*Features*
+ integrated menu
+ posibility of an analogic display and a digital one
+ posibility of changing the time zone
 
 ### Images
 
