@@ -4,13 +4,13 @@
 #include <ctime>
 #include <math.h>
 #define PI 3.1415
-
+#define paginaMeniului 0
+#define paginaCeasDigital 1
+#define paginaCeasAnalogic 2
+#define paginaSetari 3
 using namespace std;
 
-const int paginaMeniului=0;
-const int paginaCeasDigital=1;
-const int paginaCeasAnalogic=2;
-const int paginaSetari=3;
+
 
 struct punct
 {
@@ -253,6 +253,8 @@ int main()
         {
             comanda=butonul_apasat;
 
+            if(comanda==1)
+                cout<<"[INFO]Afisare setari."<<endl;
             while(comanda==1)
             {                       //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
                                     //si se misca mai bine asa , nu mai are delayul ala
@@ -261,9 +263,12 @@ int main()
                 {
                     comanda=10; //numar random doar ca sa iasa din while
                     setvisualpage(paginaMeniului);
+                     cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
-
+            
+            
+            
             if(comanda==3)
             {
                 cout<<"[INFO]Afisare ceas digital."<<endl;
