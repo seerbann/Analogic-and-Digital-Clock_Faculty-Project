@@ -116,7 +116,14 @@ void iaTimpulLocal()
     ceas.secunde = (timePtr->tm_sec);
     ceas.minute = (timePtr->tm_min);
     ceas.ore = (timePtr->tm_hour)-2;
+        if(ceas.ore==-2)
+            ceas.ore=22;
+        if(ceas.ore=-1)
+            ceas.ore=23;
     }
+
+
+
 
 }
 
