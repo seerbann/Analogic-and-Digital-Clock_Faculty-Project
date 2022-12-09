@@ -7,6 +7,11 @@
 
 using namespace std;
 
+const int paginaMeniului=0;
+const int paginaCeasDigital=1;
+const int paginaCeasAnalogic=2;
+const int paginaSetari=3;
+
 struct punct
 {
     int x, y;
@@ -214,36 +219,31 @@ void afiseazaCeasAnalogic()
     }
 }
 
-void afisarePaginaSetari()
+void deseneazaPaginaSetari()
 {
-    int k=1;
-    while(k)
+    int k;
+    setactivepage(paginaSetari);
+    setbkcolor(BLACK);
+    cleardevice();
+    setcolor(WHITE);
+    setfillstyle(SOLID_FILL,LIGHTRED);
+    afisCasutaIesire();
+    for(int i=0; i<=300; i=i+100)
+        rectangle(400,150+i,500,200+i);
+    if(intoarcereMeniuPrincipal()!=0)
     {
-        setbkcolor(BLACK);
-        cleardevice();
-        setcolor(WHITE);
-        afisCasutaIesire();
-        for(int i=0; i<=300; i=i+100)
-            rectangle(400,150+i,500,200+i);
-        delay(1000);
-        if(intoarcereMeniuPrincipal()!=0)
-        {
-            k=0;
-            cout<<"[INFO]Intoarcere la meniu."<<endl;
-        }
+        k=0;
+        cout<<"[INFO]Intoarcere la meniu."<<endl;
     }
-
 }
 
 int main()
 {
-    const int paginaMeniului=0;
-    const int paginaCeasDigital=1;
-    const int paginaCeasAnalogic=2;
-    const int paginaSetari=3;
+
     int comanda, butonul_apasat;
     initwindow(900,600);
     deseneazaMeniul();
+    deseneazaPaginaSetari();
     setactivepage(paginaMeniului);
 
     do
@@ -253,13 +253,15 @@ int main()
         {
             comanda=butonul_apasat;
 
-            if(comanda==1)
-            {
-                cout<<"[INFO]Afisare setari."<<endl;
-                setactivepage(paginaSetari);
+            while(comanda==1)
+            {                       //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
+                                    //si se misca mai bine asa , nu mai are delayul ala
                 setvisualpage(paginaSetari);
-                afisarePaginaSetari();
-                setvisualpage(paginaMeniului);
+                if(intoarcereMeniuPrincipal()!=0)
+                {
+                    comanda=10; //numar random doar ca sa iasa din while
+                    setvisualpage(paginaMeniului);
+                }
             }
 
             if(comanda==3)
