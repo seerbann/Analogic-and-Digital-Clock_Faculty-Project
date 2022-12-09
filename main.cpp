@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctime>
 #include <math.h>
+#include <iomanip>
 #define PI 3.1415
 #define paginaMeniului 0
 #define paginaCeasDigital 1
@@ -44,11 +45,7 @@ bool apartine(punct P, dreptunghi D)
 
 }
 
-bool apartine1(punct P, dreptunghi D1)
-{
-    return D1.SS.x<=P.x && P.x<=D1.DJ.x && D1.SS.y<=P.y && P.y<=D1.DJ.y;
 
-}
 
 buton B[6];
 int nrButoane=5;
@@ -159,7 +156,24 @@ void scrieTimpulDigital()
         cleardevice(); //sterge consola
         setcolor(WHITE);
         afisCasutaIesire();
-        bgiout << "      " << ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl; ;
+        ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
+        if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else if(ceas.minute<10 && ceas.secunde<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else if(ceas.ore<10 && ceas.secunde<10)
+             bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else if(ceas.ore<10 && ceas.minute<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " << endl;
+        else if(ceas.ore<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl;
+        else if(ceas.minute<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " << ceas.secunde << " " << endl;
+        else if(ceas.secunde<10)
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " << endl;
+
         outstreamxy(370, 270);
         //incrementeaza sec min si ore
         ceas.secunde++;
@@ -277,7 +291,7 @@ int butonAlesSetari()
         p.x=mousex();
         p.y=mousey();
         for(j=0; j<=3; j++)
-            if (apartine1(p,B1[j].D1))
+            if (apartine(p,B1[j].D1))
                 return j;
     }
     return -1;
