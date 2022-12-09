@@ -165,7 +165,6 @@ void scrieTimpulDigital()
             k=0;
             cout<<"[INFO]Intoarcere la meniu."<<endl;
         }
-
     }
 }
 
@@ -221,7 +220,7 @@ void afiseazaCeasAnalogic()
 
 void deseneazaPaginaSetari()
 {
-    int k;
+
     setactivepage(paginaSetari);
     setbkcolor(BLACK);
     cleardevice();
@@ -229,12 +228,15 @@ void deseneazaPaginaSetari()
     setfillstyle(SOLID_FILL,LIGHTRED);
     afisCasutaIesire();
     for(int i=0; i<=300; i=i+100)
-        rectangle(400,150+i,500,200+i);
-    if(intoarcereMeniuPrincipal()!=0)
     {
-        k=0;
-        cout<<"[INFO]Intoarcere la meniu."<<endl;
+        bar(400,150+i,500,200+i);
+        //bar draws a filled-in, rectangular, two-dimensional bar.
+        //The bar is filled using the current fill pattern and fill color. bar does not outline the bar
+        ///deci e ca un dreptunghi doar ca pot sa il stilizezi
+        setbkcolor(LIGHTRED);
     }
+    outtextxy(402,170,"Anglia");
+
 }
 
 int main()
@@ -260,6 +262,7 @@ int main()
             while(comanda==1)
             {                       //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
                                     //si se misca mai bine asa , nu mai are delayul ala
+                setfillstyle(SOLID_FILL,LIGHTRED);
                 if(intoarcereMeniuPrincipal()!=0)
                 {
                     comanda=10; //numar random doar ca sa iasa din while
@@ -267,8 +270,6 @@ int main()
                      cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
-
-
 
             if(comanda==3)
             {
@@ -279,6 +280,7 @@ int main()
                 scrieTimpulDigital();
                 setvisualpage(paginaMeniului);
             }
+
             if(comanda==4)
             {
                 cout<<"[INFO]Afisare ceas analogic."<<endl;
@@ -287,6 +289,7 @@ int main()
                 afiseazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
             }
+
             if(comanda==5)
                 cout<<"[INFO]IESIRE.";
         }
