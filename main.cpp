@@ -281,8 +281,8 @@ void deseneazaPaginaSetari()
         ///deci e ca un dreptunghi doar ca pot sa il stilizezi
         setbkcolor(LIGHTRED);
     }
-    outtextxy(402,170,"Setare1");
-    outtextxy(402,270,"Setare2");
+    outtextxy(402,170,"Anglia");
+    outtextxy(402,270,"Romania");
     outtextxy(402,370,"Setare3");
     outtextxy(402,470,"Setare4");
 
