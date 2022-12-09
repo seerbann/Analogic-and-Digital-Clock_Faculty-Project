@@ -252,13 +252,14 @@ int main()
         if (butonul_apasat!=0)
         {
             comanda=butonul_apasat;
-
             if(comanda==1)
-                cout<<"[INFO]Afisare setari."<<endl;
+                {
+                    cout<<"[INFO]Afisare setari."<<endl;
+                    setvisualpage(paginaSetari);
+                }
             while(comanda==1)
             {                       //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
                                     //si se misca mai bine asa , nu mai are delayul ala
-                setvisualpage(paginaSetari);
                 if(intoarcereMeniuPrincipal()!=0)
                 {
                     comanda=10; //numar random doar ca sa iasa din while
@@ -266,9 +267,9 @@ int main()
                      cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
-            
-            
-            
+
+
+
             if(comanda==3)
             {
                 cout<<"[INFO]Afisare ceas digital."<<endl;
