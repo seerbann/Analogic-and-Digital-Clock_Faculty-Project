@@ -43,11 +43,6 @@ bool apartine(punct P, dreptunghi D)
 
 }
 
-bool apartine1(punct P, dreptunghi D1)
-{
-    return D1.SS.x<=P.x && P.x<=D1.DJ.x && D1.SS.y<=P.y && P.y<=D1.DJ.y;
-
-}
 
 buton B[6];
 int nrButoane=5;
@@ -266,7 +261,7 @@ int butonAlesSetari()
         p.x=mousex();
         p.y=mousey();
         for(j=0; j<=3; j++)
-            if (apartine1(p,B1[j].D1))
+            if (apartine(p,B1[j].D1))
                 return j;
     }
     return -1;
@@ -298,7 +293,7 @@ int main()
             }
             while(comanda==1)
             {
-                //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
+                //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data
                 //si se misca mai bine asa , nu mai are delayul ala
                 buton_apasat_setari=butonAlesSetari();
 
