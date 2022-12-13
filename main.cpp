@@ -9,6 +9,8 @@
 #define paginaCeasDigital 1
 #define paginaCeasAnalogic 2
 #define paginaSetari 3
+#define seteazaStilTitlu  settextstyle(1,HORIZ_DIR,5)
+#define seteazaStilText settextstyle(3,HORIZ_DIR,1)
 
 using namespace std;
 
@@ -160,9 +162,9 @@ void scrieTimpulDigital()
         setbkcolor(BLACK);
         cleardevice(); //sterge consola
         setcolor(WHITE);
-        settextstyle(3,HORIZ_DIR,1);
+        seteazaStilText;
         afisCasutaIesire();
-        settextstyle(1,HORIZ_DIR,5);
+        seteazaStilTitlu;
         ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
         if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
             bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
@@ -198,6 +200,12 @@ void scrieTimpulDigital()
         {
             ceas.ore= 00;
         }
+
+        seteazaStilText;
+        if(regiune==0)
+            outtextxy(200,200,"Ceas setat pt Romania");
+        else if(regiune==1)
+            outtextxy(200,200,"Ceas setat pt Anglia");
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
         if(intoarcereMeniuPrincipal()!=0)
         {
@@ -215,7 +223,7 @@ void afiseazaCeasAnalogic()
     {
         setbkcolor(BLACK);
         cleardevice();
-        settextstyle(3,HORIZ_DIR,1);
+        seteazaStilText;
         afisCasutaIesire();
         setcolor(WHITE);
         circle(350,350,200);
@@ -269,10 +277,10 @@ void deseneazaPaginaSetari()
     setfillstyle(SOLID_FILL,LIGHTRED);
     afisCasutaIesire();
 
-    settextstyle(1,HORIZ_DIR,5); ///font pt headere
+    seteazaStilTitlu; ///font pt headere
     outtextxy(370,50,"Setari");
 
-    settextstyle(3,HORIZ_DIR,1); ///font pentru scris mic (restul scrisului)
+    seteazaStilText; ///font pentru scris mic (restul scrisului)
     int i,j;
     for(i=0,j=0; i<=300; i=i+100,j++)
     {
