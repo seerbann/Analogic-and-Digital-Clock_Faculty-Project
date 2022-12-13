@@ -15,6 +15,7 @@
 using namespace std;
 
 int regiune=0;
+bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
 
 struct punct
 {
@@ -48,8 +49,6 @@ bool apartine(punct P, dreptunghi D)
     return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
 
 }
-
-
 
 buton B[6];
 int nrButoane=5;
@@ -111,15 +110,15 @@ void iaTimpulLocal()
     tm *timePtr = localtime(&t); // ia timpul local al calculatorului
     if(regiune==0)
     {
-    ceas.secunde = (timePtr->tm_sec);
-    ceas.minute = (timePtr->tm_min);
-    ceas.ore = (timePtr->tm_hour);
+        ceas.secunde = (timePtr->tm_sec);
+        ceas.minute = (timePtr->tm_min);
+        ceas.ore = (timePtr->tm_hour);
     }
     if(regiune==1)
     {
-    ceas.secunde = (timePtr->tm_sec);
-    ceas.minute = (timePtr->tm_min);
-    ceas.ore = (timePtr->tm_hour)-2;
+        ceas.secunde = (timePtr->tm_sec);
+        ceas.minute = (timePtr->tm_min);
+        ceas.ore = (timePtr->tm_hour)-2;
         if(ceas.ore==-2)
             ceas.ore=22;
         if(ceas.ore==-1)
@@ -128,7 +127,7 @@ void iaTimpulLocal()
 }
 
 
-void afisCasutaIesire()
+void deseneazaCasutaIesire()
 {
     rectangle(10,10,40,35);
     outtextxy(18,13,"<-");
@@ -163,7 +162,7 @@ void scrieTimpulDigital()
         cleardevice(); //sterge consola
         setcolor(WHITE);
         seteazaStilText;
-        afisCasutaIesire();
+        deseneazaCasutaIesire();
         seteazaStilTitlu;
         ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
         if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
@@ -171,7 +170,7 @@ void scrieTimpulDigital()
         else if(ceas.minute<10 && ceas.secunde<10)
             bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
         else if(ceas.ore<10 && ceas.secunde<10)
-             bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
         else if(ceas.ore<10 && ceas.minute<10)
             bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " << endl;
         else if(ceas.ore<10)
@@ -216,7 +215,7 @@ void scrieTimpulDigital()
 }
 
 
-void afiseazaCeasAnalogic()
+void deseneazaCeasAnalogic()
 {
     int k=1;
     while(k)
@@ -224,7 +223,7 @@ void afiseazaCeasAnalogic()
         setbkcolor(BLACK);
         cleardevice();
         seteazaStilText;
-        afisCasutaIesire();
+        deseneazaCasutaIesire();
         setcolor(WHITE);
         circle(350,350,200);
         circle(350,350,5);
@@ -269,7 +268,6 @@ void afiseazaCeasAnalogic()
 buton B1[4];
 void deseneazaPaginaSetari()
 {
-
     setactivepage(paginaSetari);
     setbkcolor(BLACK);
     cleardevice();
@@ -277,7 +275,7 @@ void deseneazaPaginaSetari()
     setfillstyle(SOLID_FILL,LIGHTRED);
 
     seteazaStilText;
-    afisCasutaIesire();
+    deseneazaCasutaIesire();
 
     seteazaStilTitlu;
     outtextxy(370,50,"Setari");
@@ -299,8 +297,8 @@ void deseneazaPaginaSetari()
     }
     outtextxy(412,170,"Anglia");
     outtextxy(412,270,"Romania");
-    outtextxy(412,370,"Schimba tema");
-    outtextxy(412,470,"AM PM");
+    outtextxy(412,370,"Format 12h");
+    outtextxy(412,470,"Format 24h");
 }
 
 int butonAlesSetari()
@@ -321,7 +319,6 @@ int butonAlesSetari()
 
 
 
-
 int main()
 {
 
@@ -337,6 +334,7 @@ int main()
         if (butonul_apasat!=0)
         {
             comanda=butonul_apasat;
+    /////////////////////////////////////////////////////MENIU SETARI/////////////////////////////////////////////////////
             if(comanda==1)
             {
                 cout<<"[INFO]Afisare setari."<<endl;
@@ -344,17 +342,15 @@ int main()
             }
             while(comanda==1)
             {
-                //am folosit while in loc de if ptc aici nu mai e ca la ceas, nu trebuie sters si scris din nou, scriu doar o data la linia 246
-                //si se misca mai bine asa , nu mai are delayul ala
                 buton_apasat_setari=butonAlesSetari();
 
                 if(buton_apasat_setari!=-1)
                 {
                     if(buton_apasat_setari==0)
-                        {
-                          regiune=1;
-                          cout<<"[INFO]Timpul setat pentru Anglia"<<endl;
-                        }
+                    {
+                        regiune=1;
+                        cout<<"[INFO]Timpul setat pentru Anglia"<<endl;
+                    }
                     if(buton_apasat_setari==1)
                     {
                         regiune=0;
@@ -362,9 +358,16 @@ int main()
                     }
 
                     if(buton_apasat_setari==2)
-                        cout<<3<<endl;
+                    {
+                        cout<<"[INFO]Format ceas:12h."<<endl;
+                        schimba_24h_to_12h=true;
+                    }
+
                     if(buton_apasat_setari==3)
-                        cout<<4<<endl;
+                    {
+                        cout<<"[INFO]Format ceas:24h."<<endl;
+                        schimba_24h_to_12h=false;
+                    }
                 }
 
                 if(intoarcereMeniuPrincipal()!=0)
@@ -374,15 +377,35 @@ int main()
                     cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
+///////////////////////////////////////////////////////////////////^MENIU SETARI^///////////////////////////////////////////////////////////////
+
+            if(comanda==2)
+            {
+              cout<<"[INFO]Schimbare tema."<<endl;
+            }
 
             if(comanda==3)
             {
-                cout<<"[INFO]Afisare ceas digital."<<endl;
-                setactivepage(paginaCeasDigital);
-                setvisualpage(paginaCeasDigital);
-                iaTimpulLocal();
-                scrieTimpulDigital();
-                setvisualpage(paginaMeniului);
+                if(schimba_24h_to_12h==false)
+                {
+                    cout<<"[INFO]Afisare ceas digital(24h)."<<endl;
+                    setactivepage(paginaCeasDigital);
+                    setvisualpage(paginaCeasDigital);
+                    iaTimpulLocal();
+                    scrieTimpulDigital();
+                    setvisualpage(paginaMeniului);
+                }
+                else if(schimba_24h_to_12h==true)
+                {
+                    cout<<"[INFO]Afisare ceas digital(12h)."<<endl;
+                    setactivepage(paginaCeasDigital);
+                    setvisualpage(paginaCeasDigital);
+                    iaTimpulLocal();
+//                  transformare_24h_12h();                                                 ///TODO
+                    scrieTimpulDigital();
+                    setvisualpage(paginaMeniului);
+                }
+
             }
 
             if(comanda==4)
@@ -390,7 +413,7 @@ int main()
                 cout<<"[INFO]Afisare ceas analogic."<<endl;
                 setactivepage(paginaCeasAnalogic);
                 setvisualpage(paginaCeasAnalogic);
-                afiseazaCeasAnalogic();
+                deseneazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
             }
 
