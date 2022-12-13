@@ -29,6 +29,8 @@ struct
     int secunde;
     int minute;
     int ore;
+    int zi;
+    int luna;
 } ceas;
 
 struct buton
@@ -66,7 +68,7 @@ void deseneazaMeniul()
             strcpy(B[i].text,"Setari");
             break;
         case 2:
-            strcpy(B[i].text,"Joc");
+            strcpy(B[i].text,"Alarma");
             break;
         case 3:
             strcpy(B[i].text,"Digital");
@@ -121,22 +123,18 @@ void iaTimpulLocal()
         if(ceas.ore==-1)
             ceas.ore=23;
     }
-
-
-
-
 }
 
 
 void afisCasutaIesire()
 {
-    rectangle(10,10,40,30);
-    outtextxy(18,12,"<-");
+    rectangle(10,10,40,35);
+    outtextxy(18,13,"<-");
 }
 
 bool apartineCasutaIesire(punct P)
 {
-    return 10<=P.x && P.x<=40 && 10<=P.y && P.y<=30;
+    return 10<=P.x && P.x<=40 && 10<=P.y && P.y<=35;
 }
 
 int intoarcereMeniuPrincipal()
@@ -162,7 +160,9 @@ void scrieTimpulDigital()
         setbkcolor(BLACK);
         cleardevice(); //sterge consola
         setcolor(WHITE);
+        settextstyle(3,HORIZ_DIR,1);
         afisCasutaIesire();
+        settextstyle(1,HORIZ_DIR,5);
         ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
         if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
             bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
@@ -181,7 +181,7 @@ void scrieTimpulDigital()
         else
             bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " << endl;
 
-        outstreamxy(370, 270);
+        outstreamxy(290, 270);
         //incrementeaza sec min si ore
         ceas.secunde++;
         if (ceas.secunde >= 60)
@@ -215,6 +215,7 @@ void afiseazaCeasAnalogic()
     {
         setbkcolor(BLACK);
         cleardevice();
+        settextstyle(3,HORIZ_DIR,1);
         afisCasutaIesire();
         setcolor(WHITE);
         circle(350,350,200);
@@ -267,6 +268,11 @@ void deseneazaPaginaSetari()
     setcolor(WHITE);
     setfillstyle(SOLID_FILL,LIGHTRED);
     afisCasutaIesire();
+
+    settextstyle(1,HORIZ_DIR,5); ///font pt headere
+    outtextxy(370,50,"Setari");
+
+    settextstyle(3,HORIZ_DIR,1); ///font pentru scris mic (restul scrisului)
     int i,j;
     for(i=0,j=0; i<=300; i=i+100,j++)
     {
@@ -281,10 +287,10 @@ void deseneazaPaginaSetari()
         ///deci e ca un dreptunghi doar ca pot sa il stilizezi
         setbkcolor(LIGHTRED);
     }
-    outtextxy(402,170,"Anglia");
-    outtextxy(402,270,"Romania");
-    outtextxy(402,370,"Setare3");
-    outtextxy(402,470,"Setare4");
+    outtextxy(412,170,"Anglia");
+    outtextxy(412,270,"Romania");
+    outtextxy(412,370,"Setare3");
+    outtextxy(412,470,"Setare4");
 
 }
 
