@@ -69,7 +69,7 @@ void deseneazaMeniul()
             strcpy(B[i].text,"Setari");
             break;
         case 2:
-            strcpy(B[i].text,"Alarma");
+            strcpy(B[i].text,"Sch. Tema");
             break;
         case 3:
             strcpy(B[i].text,"Digital");
