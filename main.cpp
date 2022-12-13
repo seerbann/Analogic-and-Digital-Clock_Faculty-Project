@@ -203,9 +203,9 @@ void scrieTimpulDigital()
 
         seteazaStilText;
         if(regiune==0)
-            outtextxy(200,200,"Ceas setat pt Romania");
+            outtextxy(200,200,"Ceas setat pentru Romania");
         else if(regiune==1)
-            outtextxy(200,200,"Ceas setat pt Anglia");
+            outtextxy(200,200,"Ceas setat pentru Anglia");
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
         if(intoarcereMeniuPrincipal()!=0)
         {
@@ -275,12 +275,14 @@ void deseneazaPaginaSetari()
     cleardevice();
     setcolor(WHITE);
     setfillstyle(SOLID_FILL,LIGHTRED);
+
+    seteazaStilText;
     afisCasutaIesire();
 
-    seteazaStilTitlu; ///font pt headere
+    seteazaStilTitlu;
     outtextxy(370,50,"Setari");
 
-    seteazaStilText; ///font pentru scris mic (restul scrisului)
+    seteazaStilText;
     int i,j;
     for(i=0,j=0; i<=300; i=i+100,j++)
     {
@@ -297,9 +299,8 @@ void deseneazaPaginaSetari()
     }
     outtextxy(412,170,"Anglia");
     outtextxy(412,270,"Romania");
-    outtextxy(412,370,"Setare3");
-    outtextxy(412,470,"Setare4");
-
+    outtextxy(412,370,"Schimba tema");
+    outtextxy(412,470,"AM PM");
 }
 
 int butonAlesSetari()
