@@ -6,12 +6,12 @@
 #include <iomanip>
 #define PI 3.1415
 #define paginaMeniului 0
-#define paginaCeasDigital 1
+#define paginaCeasDigital24h 1
 #define paginaCeasAnalogic 2
 #define paginaSetari 3
+#define paginaCeasDigital12h 4
 #define seteazaStilTitlu  settextstyle(1,HORIZ_DIR,5)
 #define seteazaStilText settextstyle(3,HORIZ_DIR,1)
-
 using namespace std;
 
 int regiune=0;
@@ -88,6 +88,8 @@ void deseneazaMeniul()
     }
 }
 
+
+
 int butonAles()
 {
     int i;
@@ -153,7 +155,7 @@ int intoarcereMeniuPrincipal()
 }
 
 
-void scrieTimpulDigital()
+void scrieTimpulDigital_24h()
 {
     int k=1;
     while (k)
@@ -301,6 +303,91 @@ void deseneazaPaginaSetari()
     outtextxy(412,470,"Format 24h");
 }
 
+/*
+void hover_highlight()
+{
+    int bk_color;
+    punct p;
+    p.x=mousex();
+    p.y=mousey();
+    setcolor(bk_color);
+		for (int i=1; i<=nrButoane; i++)
+            if (apartine(p,B1[i].D1))
+	    {
+	    	bk_color=14;
+		}
+		else
+		bk_color=12;
+}
+*/
+void scrieTimpulDigital_12h()
+{
+    int ok=1;
+    char tip_ceas[3];
+    while (ok)
+    {
+        setbkcolor(BLACK);
+        cleardevice(); //sterge consola
+        setcolor(WHITE);
+        seteazaStilText;
+        deseneazaCasutaIesire();
+        seteazaStilTitlu;
+        if(ceas.ore>13)
+        {
+            ceas.ore=ceas.ore-12;
+            strcpy(tip_ceas,"PM");
+        }
+        else
+            strcpy(tip_ceas,"AM");
+                    ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
+        if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " "<<tip_ceas<< endl;
+        else if(ceas.minute<10 && ceas.secunde<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.ore<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.ore<10 && ceas.minute<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.ore<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.minute<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<<endl;
+        else if(ceas.secunde<10)
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<<endl;
+        else
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+
+        outstreamxy(290, 270);
+        //incrementeaza sec min si ore
+        ceas.secunde++;
+        if (ceas.secunde >= 60)
+        {
+            ceas.secunde = 1;
+            ceas.minute++;
+        }
+        if (ceas.minute >= 60)
+        {
+            ceas.minute = 0;
+            ceas.ore++;
+        }
+        if (ceas.ore > 13)
+        {
+            ceas.ore= 0;
+        }
+
+        seteazaStilText;
+        if(regiune==0)
+            outtextxy(200,200,"Ceas setat pentru Romania");
+        else if(regiune==1)
+            outtextxy(200,200,"Ceas setat pentru Anglia");
+        delay(1000); // opreste codul timp de 1000 ms(o secunda)
+        if(intoarcereMeniuPrincipal()!=0)
+        {
+            ok=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+    }
+}
 int butonAlesSetari()
 {
     int j;
@@ -334,7 +421,7 @@ int main()
         if (butonul_apasat!=0)
         {
             comanda=butonul_apasat;
-    /////////////////////////////////////////////////////MENIU SETARI/////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////MENIU SETARI/////////////////////////////////////////////////////
             if(comanda==1)
             {
                 cout<<"[INFO]Afisare setari."<<endl;
@@ -343,7 +430,6 @@ int main()
             while(comanda==1)
             {
                 buton_apasat_setari=butonAlesSetari();
-
                 if(buton_apasat_setari!=-1)
                 {
                     if(buton_apasat_setari==0)
@@ -381,7 +467,7 @@ int main()
 
             if(comanda==2)
             {
-              cout<<"[INFO]Schimbare tema."<<endl;
+                cout<<"[INFO]Schimbare tema."<<endl;
             }
 
             if(comanda==3)
@@ -389,23 +475,21 @@ int main()
                 if(schimba_24h_to_12h==false)
                 {
                     cout<<"[INFO]Afisare ceas digital(24h)."<<endl;
-                    setactivepage(paginaCeasDigital);
-                    setvisualpage(paginaCeasDigital);
+                    setactivepage(paginaCeasDigital24h);
+                    setvisualpage(paginaCeasDigital24h);
                     iaTimpulLocal();
-                    scrieTimpulDigital();
+                    scrieTimpulDigital_24h();
                     setvisualpage(paginaMeniului);
                 }
                 else if(schimba_24h_to_12h==true)
                 {
                     cout<<"[INFO]Afisare ceas digital(12h)."<<endl;
-                    setactivepage(paginaCeasDigital);
-                    setvisualpage(paginaCeasDigital);
+                    setactivepage(paginaCeasDigital24h);
+                    setvisualpage(paginaCeasDigital24h);
                     iaTimpulLocal();
-//                  transformare_24h_12h();                                                 ///TODO
-                    scrieTimpulDigital();
+                    scrieTimpulDigital_12h();
                     setvisualpage(paginaMeniului);
                 }
-
             }
 
             if(comanda==4)
