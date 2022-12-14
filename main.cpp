@@ -92,6 +92,7 @@ void deseneazaMeniul()
 
 int butonAles()
 {
+    setactivepage(paginaMeniului);
     int i;
     punct p;
     if (ismouseclick(WM_LBUTTONDOWN))
@@ -101,7 +102,10 @@ int butonAles()
         p.y=mousey();
         for (i=1; i<=nrButoane; i++)
             if (apartine(p,B[i].D))
-                return i;
+            {
+                 return i;
+            }
+
     }
     return 0;
 }
@@ -303,23 +307,6 @@ void deseneazaPaginaSetari()
     outtextxy(412,470,"Format 24h");
 }
 
-/*
-void hover_highlight()
-{
-    int bk_color;
-    punct p;
-    p.x=mousex();
-    p.y=mousey();
-    setcolor(bk_color);
-		for (int i=1; i<=nrButoane; i++)
-            if (apartine(p,B1[i].D1))
-	    {
-	    	bk_color=14;
-		}
-		else
-		bk_color=12;
-}
-*/
 void scrieTimpulDigital_12h()
 {
     int ok=1;
@@ -332,7 +319,7 @@ void scrieTimpulDigital_12h()
         seteazaStilText;
         deseneazaCasutaIesire();
         seteazaStilTitlu;
-        if(ceas.ore>13)
+        if(ceas.ore>=13)
         {
             ceas.ore=ceas.ore-12;
             strcpy(tip_ceas,"PM");
@@ -370,7 +357,7 @@ void scrieTimpulDigital_12h()
             ceas.minute = 0;
             ceas.ore++;
         }
-        if (ceas.ore > 13)
+        if (ceas.ore >= 13)
         {
             ceas.ore= 0;
         }
@@ -403,9 +390,26 @@ int butonAlesSetari()
     }
     return -1;
 }
-
-
-
+/*
+void hover_highlight()
+{
+    int bk_color;
+    punct p;
+    p.x=mousex();
+    p.y=mousey();
+		for (int i=0; i<=3; i++)
+            if (apartine(p,B1[i].D1))
+	    {
+	    	bk_color=14;
+            setbkcolor(bk_color);
+		}
+		else
+        {
+            bk_color=12;
+            setbkcolor(bk_color);
+        }
+}
+*/
 int main()
 {
 
