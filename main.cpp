@@ -63,10 +63,10 @@ void deseneazaMeniul()
     int i;
     for (i=1; i<=nrButoane; i++)
     {
-        B[i].D.SS.x=100*i;
-        B[i].D.DJ.x=100*(i+1)-5;
-        B[i].D.SS.y=50;
-        B[i].D.DJ.y=80;
+        B[i].D.SS.x=125*i;
+        B[i].D.DJ.x=125*(i+1)-5;
+        B[i].D.SS.y=150;
+        B[i].D.DJ.y=180;
         switch(i)
         {
         case 1:
