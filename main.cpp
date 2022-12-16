@@ -354,8 +354,8 @@ void deseneazaCeasAnalogic()
 void deseneazaSageata(int x1,int y1,int x2,int y2)
 {
     line(x1,y1,x2,y2);
-    line(x1,y1,x2-5,y2-5);
-    line(x1,y1,x2-5,y2+5);
+    line(x1,y1,x2-15,y2-5);
+    line(x1,y1,x2-15,y2+5);
 }
 
 void deseneazaPaginaSetari()
