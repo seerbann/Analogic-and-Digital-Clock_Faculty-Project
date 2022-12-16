@@ -365,8 +365,10 @@ void scrieTimpulDigital_12h()
             ceas.minute = 0;
             ceas.ore++;
         }
-
-
+        if (ceas.ore > 24)
+        {
+            ceas.ore= 00;
+        }
         seteazaStilText;
         if(regiune==0)
             outtextxy(200,200,"Ceas setat pentru Romania");
