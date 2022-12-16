@@ -15,6 +15,7 @@
 using namespace std;
 
 int regiune=0;
+int culoare=0;
 bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
 
 struct punct
@@ -38,6 +39,7 @@ struct
 
 struct buton
 {
+    bool hovered;
     dreptunghi D;
     dreptunghi D1;
     int culoare;
@@ -51,11 +53,14 @@ bool apartine(punct P, dreptunghi D)
 }
 
 buton B[6];
+buton B1[4];
 int nrButoane=5;
+
 void deseneazaMeniul()
 {
     setcolor(BLACK);
     setfillstyle(SOLID_FILL,LIGHTRED);
+
     int i;
     for (i=1; i<=nrButoane; i++)
     {
@@ -105,7 +110,6 @@ int butonAles()
             {
                 return i;
             }
-
     }
     return 0;
 }
@@ -220,93 +224,6 @@ void scrieTimpulDigital_24h()
     }
 }
 
-
-void deseneazaCeasAnalogic()
-{
-    int k=1;
-    while(k)
-    {
-        setbkcolor(BLACK);
-        cleardevice();
-        seteazaStilText;
-        deseneazaCasutaIesire();
-        setcolor(WHITE);
-        circle(350,350,200);
-        circle(350,350,5);
-        outtextxy(350+180*sin(PI/6)-5, 350-180*cos(PI/6), "1");
-        outtextxy(350+180*sin(2*PI/6)-5, 350-180*cos(2*PI/6), "2");
-        outtextxy(350+180*sin(3*PI/6)-5, 350-180*cos(3*PI/6), "3");
-        outtextxy(350+180*sin(4*PI/6)-5, 350-180*cos(4*PI/6), "4");
-        outtextxy(350+180*sin(5*PI/6)-5, 350-180*cos(5*PI/6), "5");
-        outtextxy(350+180*sin(6*PI/6)-5, 350-180*cos(6*PI/6), "6");
-        outtextxy(350+180*sin(7*PI/6)-5, 350-180*cos(7*PI/6), "7");
-        outtextxy(350+180*sin(8*PI/6)-5, 350-180*cos(8*PI/6), "8");
-        outtextxy(350+180*sin(9*PI/6)-5, 350-180*cos(9*PI/6), "9");
-        outtextxy(350+180*sin(10*PI/6)-5, 350-180*cos(10*PI/6), "10");
-        outtextxy(350+180*sin(11*PI/6)-5, 350-180*cos(11*PI/6), "11");
-        outtextxy(350+180*sin(12*PI/6)-5, 350-180*cos(12*PI/6), "12");
-
-        iaTimpulLocal();
-
-        //linia pentru ora
-
-        setcolor(RED);
-        line(350,350,350+150*sin(ceas.ore*PI/6),350-150*cos(ceas.ore*PI/6));
-
-        //linia pentru minute
-
-        setcolor(GREEN);
-        line(350,350,350+190*sin(ceas.minute*PI/30),350-190*cos(ceas.minute*PI/30));
-
-        //linia pentru secunde
-
-        setcolor(WHITE);
-        line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
-        delay(1000);
-        if(intoarcereMeniuPrincipal()!=0)
-        {
-            k=0;
-            cout<<"[INFO]Intoarcere la meniu."<<endl;
-        }
-    }
-}
-
-buton B1[4];
-void deseneazaPaginaSetari()
-{
-    setactivepage(paginaSetari);
-    setbkcolor(BLACK);
-    cleardevice();
-    setcolor(WHITE);
-    setfillstyle(SOLID_FILL,LIGHTRED);
-
-    seteazaStilText;
-    deseneazaCasutaIesire();
-
-    seteazaStilTitlu;
-    outtextxy(370,50,"Setari");
-
-    seteazaStilText;
-    int i,j;
-    for(i=0,j=0; i<=300; i=i+100,j++)
-    {
-        B1[j].D1.SS.x=400;
-        B1[j].D1.DJ.x=500;
-        B1[j].D1.SS.y=150+i;
-        B1[j].D1.DJ.y=200+i;
-        bar(B1[j].D1.SS.x,B1[j].D1.SS.y,B1[j].D1.DJ.x,B1[j].D1.DJ.y);
-        rectangle(B1[j].D1.SS.x,B1[j].D1.SS.y,B1[j].D1.DJ.x,B1[j].D1.DJ.y);
-        //bar draws a filled-in, rectangular, two-dimensional bar.
-        //The bar is filled using the current fill pattern and fill color. bar does not outline the bar
-        ///deci e ca un dreptunghi doar ca pot sa il stilizezi
-        setbkcolor(LIGHTRED);
-    }
-    outtextxy(412,170,"Anglia");
-    outtextxy(412,270,"Romania");
-    outtextxy(412,370,"Format 12h");
-    outtextxy(412,470,"Format 24h");
-}
-
 void scrieTimpulDigital_12h()
 {
     int ok=1;
@@ -382,6 +299,104 @@ void scrieTimpulDigital_12h()
         }
     }
 }
+
+
+void deseneazaCeasAnalogic()
+{
+    int k=1;
+    while(k)
+    {
+        setbkcolor(BLACK);
+        cleardevice();
+        seteazaStilText;
+        deseneazaCasutaIesire();
+        setcolor(WHITE);
+        circle(350,350,200);
+        circle(350,350,5);
+        outtextxy(350+180*sin(PI/6)-5, 350-180*cos(PI/6), "1");
+        outtextxy(350+180*sin(2*PI/6)-5, 350-180*cos(2*PI/6), "2");
+        outtextxy(350+180*sin(3*PI/6)-5, 350-180*cos(3*PI/6), "3");
+        outtextxy(350+180*sin(4*PI/6)-5, 350-180*cos(4*PI/6), "4");
+        outtextxy(350+180*sin(5*PI/6)-5, 350-180*cos(5*PI/6), "5");
+        outtextxy(350+180*sin(6*PI/6)-5, 350-180*cos(6*PI/6), "6");
+        outtextxy(350+180*sin(7*PI/6)-5, 350-180*cos(7*PI/6), "7");
+        outtextxy(350+180*sin(8*PI/6)-5, 350-180*cos(8*PI/6), "8");
+        outtextxy(350+180*sin(9*PI/6)-5, 350-180*cos(9*PI/6), "9");
+        outtextxy(350+180*sin(10*PI/6)-5, 350-180*cos(10*PI/6), "10");
+        outtextxy(350+180*sin(11*PI/6)-5, 350-180*cos(11*PI/6), "11");
+        outtextxy(350+180*sin(12*PI/6)-5, 350-180*cos(12*PI/6), "12");
+
+        iaTimpulLocal();
+
+        //linia pentru ora
+
+        setcolor(RED);
+        line(350,350,350+150*sin(ceas.ore*PI/6),350-150*cos(ceas.ore*PI/6));
+
+        //linia pentru minute
+
+        setcolor(GREEN);
+        line(350,350,350+190*sin(ceas.minute*PI/30),350-190*cos(ceas.minute*PI/30));
+
+        //linia pentru secunde
+
+        setcolor(WHITE);
+        line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
+        delay(1000);
+        if(intoarcereMeniuPrincipal()!=0)
+        {
+            k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+    }
+}
+
+void deseneazaSageata(int x1,int y1,int x2,int y2)
+{
+    line(x1,y1,x2,y2);
+    line(x1,y1,x2-5,y2-5);
+    line(x1,y1,x2-5,y2+5);
+}
+
+void deseneazaPaginaSetari()
+{
+    setactivepage(paginaSetari);
+    setbkcolor(BLACK);
+    cleardevice();
+    setcolor(WHITE);
+    setfillstyle(SOLID_FILL,LIGHTRED);
+
+    seteazaStilText;
+    deseneazaCasutaIesire();
+
+    seteazaStilTitlu;
+    outtextxy(370,50,"Setari");
+
+    seteazaStilText;
+    int i,j;
+    for(i=0,j=0; i<=300; i=i+100,j++)
+    {
+        B1[j].D1.SS.x=400;
+        B1[j].D1.DJ.x=500;
+        B1[j].D1.SS.y=150+i;
+        B1[j].D1.DJ.y=200+i;
+        bar(B1[j].D1.SS.x,B1[j].D1.SS.y,B1[j].D1.DJ.x,B1[j].D1.DJ.y);
+        rectangle(B1[j].D1.SS.x,B1[j].D1.SS.y,B1[j].D1.DJ.x,B1[j].D1.DJ.y);
+        //bar draws a filled-in, rectangular, two-dimensional bar.
+        //The bar is filled using the current fill pattern and fill color. bar does not outline the bar
+        ///deci e ca un dreptunghi doar ca pot sa il stilizezi
+        setbkcolor(LIGHTRED);
+    }
+    if(regiune==0)
+        deseneazaSageata(550,275,570,275);
+    if(regiune==1)
+        deseneazaSageata(550,175,570,175);
+    outtextxy(412,170,"Anglia");
+    outtextxy(412,270,"Romania");
+    outtextxy(412,370,"Format 12h");
+    outtextxy(412,470,"Format 24h");
+}
+
 int butonAlesSetari()
 {
     int j;
@@ -393,30 +408,15 @@ int butonAlesSetari()
         p.y=mousey();
         for(j=0; j<=3; j++)
             if (apartine(p,B1[j].D1))
+            {
                 return j;
+            }
+
     }
     return -1;
 }
-/*
-void hover_highlight()
-{
-    int bk_color;
-    punct p;
-    p.x=mousex();
-    p.y=mousey();
-		for (int i=0; i<=3; i++)
-            if (apartine(p,B1[i].D1))
-	    {
-	    	bk_color=14;
-            setbkcolor(bk_color);
-		}
-		else
-        {
-            bk_color=12;
-            setbkcolor(bk_color);
-        }
-}
-*/
+
+
 int main()
 {
 
@@ -428,6 +428,8 @@ int main()
 
     do
     {
+
+
         butonul_apasat=butonAles();
         if (butonul_apasat!=0)
         {
@@ -447,11 +449,13 @@ int main()
                     {
                         regiune=1;
                         cout<<"[INFO]Timpul setat pentru Anglia"<<endl;
+                        deseneazaPaginaSetari();
                     }
                     if(buton_apasat_setari==1)
                     {
                         regiune=0;
                         cout<<"[INFO]Timpul setat pentru Romania"<<endl;
+                        deseneazaPaginaSetari();
                     }
 
                     if(buton_apasat_setari==2)
