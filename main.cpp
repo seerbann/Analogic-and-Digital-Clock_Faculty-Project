@@ -6,10 +6,9 @@
 #include <iomanip>
 #define PI 3.1415
 #define paginaMeniului 0
-#define paginaCeasDigital24h 1
+#define paginaCeasDigital 1
 #define paginaCeasAnalogic 2
 #define paginaSetari 3
-#define paginaCeasDigital12h 4
 #define seteazaStilTitlu  settextstyle(1,HORIZ_DIR,5)
 #define seteazaStilText settextstyle(3,HORIZ_DIR,1)
 using namespace std;
@@ -391,6 +390,10 @@ void deseneazaPaginaSetari()
         deseneazaSageata(550,275,570,275);
     if(regiune==1)
         deseneazaSageata(550,175,570,175);
+    if(schimba_24h_to_12h==true)
+        deseneazaSageata(550,375,570,375);
+    if(schimba_24h_to_12h==false)
+        deseneazaSageata(550,475,570,475);
     outtextxy(412,170,"Anglia");
     outtextxy(412,270,"Romania");
     outtextxy(412,370,"Format 12h");
@@ -462,12 +465,14 @@ int main()
                     {
                         cout<<"[INFO]Format ceas:12h."<<endl;
                         schimba_24h_to_12h=true;
+                        deseneazaPaginaSetari();
                     }
 
                     if(buton_apasat_setari==3)
                     {
                         cout<<"[INFO]Format ceas:24h."<<endl;
                         schimba_24h_to_12h=false;
+                        deseneazaPaginaSetari();
                     }
                 }
 
@@ -490,8 +495,8 @@ int main()
                 if(schimba_24h_to_12h==false)
                 {
                     cout<<"[INFO]Afisare ceas digital(24h)."<<endl;
-                    setactivepage(paginaCeasDigital24h);
-                    setvisualpage(paginaCeasDigital24h);
+                    setactivepage(paginaCeasDigital);
+                    setvisualpage(paginaCeasDigital);
                     iaTimpulLocal();
                     scrieTimpulDigital_24h();
                     setvisualpage(paginaMeniului);
@@ -499,8 +504,8 @@ int main()
                 else if(schimba_24h_to_12h==true)
                 {
                     cout<<"[INFO]Afisare ceas digital(12h)."<<endl;
-                    setactivepage(paginaCeasDigital24h);
-                    setvisualpage(paginaCeasDigital24h);
+                    setactivepage(paginaCeasDigital);
+                    setvisualpage(paginaCeasDigital);
                     iaTimpulLocal();
                     scrieTimpulDigital_12h();
                     setvisualpage(paginaMeniului);
