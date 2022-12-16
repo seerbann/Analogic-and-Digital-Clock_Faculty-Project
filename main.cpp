@@ -88,7 +88,7 @@ void deseneazaMeniul()
         rectangle(B[i].D.SS.x, B[i].D.SS.y,B[i].D.DJ.x,B[i].D.DJ.y);
         bar(B[i].D.SS.x, B[i].D.SS.y+30, B[i].D.DJ.x, B[i].D.SS.y);
         setbkcolor(LIGHTRED);
-        outtextxy(B[i].D.SS.x+25,B[i].D.SS.y+10,B[i].text);
+        outtextxy(B[i].D.SS.x+35,B[i].D.SS.y+10,B[i].text);
     }
 }
 
