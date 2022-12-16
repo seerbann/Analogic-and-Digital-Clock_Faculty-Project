@@ -103,7 +103,7 @@ int butonAles()
         for (i=1; i<=nrButoane; i++)
             if (apartine(p,B[i].D))
             {
-                 return i;
+                return i;
             }
 
     }
@@ -310,7 +310,20 @@ void deseneazaPaginaSetari()
 void scrieTimpulDigital_12h()
 {
     int ok=1;
+    int sw=0;
     char tip_ceas[3];
+
+    if(ceas.ore>=13)
+    {
+        ceas.ore=ceas.ore-12;
+        strcpy(tip_ceas,"PM");
+
+    }
+    else
+    {
+        strcpy(tip_ceas,"AM");
+    }
+
     while (ok)
     {
         setbkcolor(BLACK);
@@ -319,14 +332,9 @@ void scrieTimpulDigital_12h()
         seteazaStilText;
         deseneazaCasutaIesire();
         seteazaStilTitlu;
-        if(ceas.ore>=13)
-        {
-            ceas.ore=ceas.ore-12;
-            strcpy(tip_ceas,"PM");
-        }
-        else
-            strcpy(tip_ceas,"AM");
-                    ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
+
+
+        ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
         if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
             bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " "<<tip_ceas<< endl;
         else if(ceas.minute<10 && ceas.secunde<10)
@@ -357,10 +365,7 @@ void scrieTimpulDigital_12h()
             ceas.minute = 0;
             ceas.ore++;
         }
-        if (ceas.ore >= 13)
-        {
-            ceas.ore= 0;
-        }
+
 
         seteazaStilText;
         if(regiune==0)
