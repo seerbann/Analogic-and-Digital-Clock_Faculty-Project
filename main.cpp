@@ -58,7 +58,7 @@ int nrButoane=5;
 void deseneazaMeniul()
 {
     seteazaStilText;
-    readimagefile("background-unfocused.jpg",0,0,900,600);
+    //readimagefile("background-unfocused.jpg",0,0,900,600);
     setcolor(BLACK);
     setfillstyle(SOLID_FILL,LIGHTRED);
 
