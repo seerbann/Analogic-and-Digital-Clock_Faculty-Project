@@ -9,7 +9,7 @@
 #define paginaCeasDigital 1
 #define paginaCeasAnalogic 2
 #define paginaSetari 3
-#define paginaAlarma 4
+#define paginaAlarma 5
 #define seteazaStilTitlu  settextstyle(1,HORIZ_DIR,5)
 #define seteazaStilText settextstyle(3,HORIZ_DIR,1)
 #define ROMANIA 0
@@ -425,34 +425,58 @@ int butonAlesSetari()
 
 void deseneazaPaginaAlarma()
 {
-    setactivepage(paginaSetari);
-    setvisualpage(paginaSetari);
-    setbkcolor(BLACK);
-    cleardevice();
-    setcolor(WHITE);
-    setfillstyle(SOLID_FILL,LIGHTRED);
-
-    seteazaStilText;
-    deseneazaCasutaIesire();
-
-    seteazaStilTitlu;
-    outtextxy(350,50,"Alarma");
-    setfillstyle(SOLID_FILL,LIGHTRED);
-        for (int i=1; i<=4; i++)
+    int k=1;
+    while(k)
     {
-        B2[i].D.SS.x=200*i-100;
-        B2[i].D.DJ.x=200*i;
-        B2[i].D.SS.y=250;
-        B2[i].D.DJ.y=350;
-       rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
-        bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
-        setbkcolor(LIGHTRED);
 
+        setbkcolor(BLACK);
+        cleardevice();
+        setcolor(WHITE);
+
+        seteazaStilText;
+        deseneazaCasutaIesire();
+
+        seteazaStilTitlu;
+        outtextxy(350,50,"Alarma");
+
+        for (int i=1; i<=4; i++)
+        {
+            B2[i].D.SS.x=200*i-100;
+            B2[i].D.DJ.x=200*i;
+            B2[i].D.SS.y=250;
+            B2[i].D.DJ.y=350;
+            rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
+            bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
+            setbkcolor(LIGHTRED);
+
+        }
+        if(intoarcereMeniuPrincipal()!=0)
+        {
+            k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+        delay(1000);
     }
-    delay(1000);
 
 }
 
+int butonAlesAlarma()
+{
+    int i;
+    punct p;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p.x=mousex();
+        p.y=mousey();
+        for (i=1; i<=4; i++)
+            if (apartine(p,B2[i].D))
+            {
+                return i;
+            }
+    }
+    return 0;
+}
 
 void hover()
 {
@@ -501,7 +525,7 @@ int verifHover()            //animatie selectare buton meniu
 int main()
 {
 
-    int comanda, butonul_apasat,buton_apasat_setari;
+    int comanda, butonul_apasat,buton_apasat_setari,buton_apasat_alarma;
     initwindow(900,600);
     setlinestyle(0,1,2);
     deseneazaMeniul();
@@ -572,18 +596,12 @@ int main()
             {
                 cout<<"[INFO]Meniu Alarma."<<endl;
 
-            }
-            while(comanda==2)
-            {
-                deseneazaPaginaAlarma();
 
-                if(intoarcereMeniuPrincipal()!=0)
-                {
-                    comanda=10; //numar random doar ca sa iasa din while
-                    setvisualpage(paginaMeniului);
-                    setactivepage(paginaMeniului);
-                    cout<<"[INFO]Intoarcere la meniu."<<endl;
-                }
+                setvisualpage(paginaAlarma);
+                deseneazaPaginaAlarma();
+                setactivepage(paginaMeniului);
+                setvisualpage(paginaMeniului);
+                deseneazaMeniul();
             }
 
             if(comanda==3)
