@@ -9,12 +9,15 @@
 #define paginaCeasDigital 1
 #define paginaCeasAnalogic 2
 #define paginaSetari 3
+#define paginaAlarma 5
 #define seteazaStilTitlu  settextstyle(1,HORIZ_DIR,5)
 #define seteazaStilText settextstyle(3,HORIZ_DIR,1)
+#define ROMANIA 0
+#define UK 1
 using namespace std;
 
-int regiune=0;
-int culoare=0;
+int regiune=ROMANIA; // initial regiunea este Romania
+
 bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
 
 struct punct
@@ -27,14 +30,16 @@ struct dreptunghi
     punct SS, DJ;
 };
 
-struct
+struct Ceas
 {
     int secunde;
     int minute;
     int ore;
     int zi;
     int luna;
-} ceas;
+} ;
+Ceas ceas;
+Ceas alarma;
 
 struct buton
 {
@@ -53,10 +58,13 @@ bool apartine(punct P, dreptunghi D)
 
 buton B[6];
 buton B1[4];
+buton B2[4];
 int nrButoane=5;
 
 void deseneazaMeniul()
 {
+    seteazaStilText;
+    readimagefile("background-unfocused.jpg",0,0,900,600);
     setcolor(BLACK);
     setfillstyle(SOLID_FILL,LIGHTRED);
 
@@ -65,15 +73,15 @@ void deseneazaMeniul()
     {
         B[i].D.SS.x=125*i;
         B[i].D.DJ.x=125*(i+1)-5;
-        B[i].D.SS.y=150;
-        B[i].D.DJ.y=180;
+        B[i].D.SS.y=270;
+        B[i].D.DJ.y=300;
         switch(i)
         {
         case 1:
             strcpy(B[i].text,"Setari");
             break;
         case 2:
-            strcpy(B[i].text,"Sch. Tema");
+            strcpy(B[i].text,"Alarma");
             break;
         case 3:
             strcpy(B[i].text,"Digital");
@@ -96,7 +104,6 @@ void deseneazaMeniul()
 
 int butonAles()
 {
-    setactivepage(paginaMeniului);
     int i;
     punct p;
     if (ismouseclick(WM_LBUTTONDOWN))
@@ -117,13 +124,13 @@ void iaTimpulLocal()
 {
     time_t t = time(NULL);
     tm *timePtr = localtime(&t); // ia timpul local al calculatorului
-    if(regiune==0)
+    if(regiune==ROMANIA)
     {
         ceas.secunde = (timePtr->tm_sec);
         ceas.minute = (timePtr->tm_min);
         ceas.ore = (timePtr->tm_hour);
     }
-    if(regiune==1)
+    if(regiune==UK)
     {
         ceas.secunde = (timePtr->tm_sec);
         ceas.minute = (timePtr->tm_min);
@@ -149,13 +156,13 @@ bool apartineCasutaIesire(punct P)
 
 int intoarcereMeniuPrincipal()
 {
-    punct p;
+    punct p1;
     if (ismouseclick(WM_LBUTTONDOWN))
     {
         clearmouseclick(WM_LBUTTONDOWN);
-        p.x=mousex();
-        p.y=mousey();
-        if (apartineCasutaIesire(p))
+        p1.x=mousex();
+        p1.y=mousey();
+        if (apartineCasutaIesire(p1))
             return 1;
     }
     return 0;
@@ -233,7 +240,6 @@ void scrieTimpulDigital_12h()
     {
         ceas.ore=ceas.ore-12;
         strcpy(tip_ceas,"PM");
-
     }
     else
     {
@@ -369,7 +375,7 @@ void deseneazaPaginaSetari()
     deseneazaCasutaIesire();
 
     seteazaStilTitlu;
-    outtextxy(370,50,"Setari");
+    outtextxy(350,50,"Setari");
 
     seteazaStilText;
     int i,j;
@@ -419,12 +425,117 @@ int butonAlesSetari()
     return -1;
 }
 
+int butonAlesAlarma()
+{
+    int i;
+    punct p;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p.x=mousex();
+        p.y=mousey();
+        for (i=1; i<=4; i++)
+            if (apartine(p,B2[i].D))
+            {
+                return i;
+            }
+    }
+    return 0;
+}
+void deseneazaPaginaAlarma()
+{
+
+    setactivepage(paginaAlarma);
+    setbkcolor(BLACK);
+    cleardevice();
+
+    setcolor(WHITE);
+
+    seteazaStilText;
+    deseneazaCasutaIesire();
+
+
+    settextstyle(0,HORIZ_DIR,3);
+    outstreamxy(220,280);
+    bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"               "<<setw(2)<<setfill('0') <<alarma.minute;
+    seteazaStilTitlu;
+    outtextxy(350,50,"Alarma");
+    for (int i=1; i<=4; i++)
+    {
+        B2[i].D.SS.x=200*i-100;
+        B2[i].D.DJ.x=200*i;
+        B2[i].D.SS.y=250;
+        B2[i].D.DJ.y=350;
+        rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
+        bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
+        setbkcolor(LIGHTRED);
+    }
+    //plus.ore
+    line(110,300,190,300);
+    line(150,260,150,340);
+    //minus.ore
+    line(310,300,390,300);
+    //plus.minute
+    line(510,300,590,300);
+    line(550,260,550,340);
+    //minus.minute
+    line(710,300,790,300);
+
+}
+
+
+
+void hover()
+{
+    punct p;
+    p.x=mousex();
+    p.y=mousey();
+    for (int i=1; i<=nrButoane; i++)
+        if (apartine(p,B[i].D))
+        {
+            B[i].hovered=1;
+        }
+        else
+            B[i].hovered=0;
+}
+
+void animatieMeniuPrincipal(int x1,int y1,int x2,int y2)
+{
+    setcolor(WHITE);
+    line(x1,y1,x1-10,y1-10);
+    line(x1,y1,x1+10,y1-10);
+
+    line(x2,y2,x2-10,y2+10);
+    line(x2,y2,x2+10,y2+10);
+}
+
+unsigned int m=0;
+int verifHover()            //animatie selectare buton meniu
+{
+    m=0;
+    for (int i=1; i<=nrButoane; i++)
+        if (B[i].hovered==1)
+        {
+            animatieMeniuPrincipal(B[i].D.SS.x+60,B[i].D.SS.y-5,B[i].D.DJ.x-60,B[i].D.DJ.y+5);
+            m=1;
+        }
+    delay(250);
+    if(m==0)    //caz in care niciun buton nu e hovered
+        return 0;
+    if(m==1) //caz in care un buton e hovered si trebuie sa redesenez meniul pt a crea efectul
+    {
+        deseneazaMeniul();
+    }
+
+}
 
 int main()
 {
-
-    int comanda, butonul_apasat,buton_apasat_setari;
+    alarma.ore=0;
+    alarma.minute=0;
+    int comanda, butonul_apasat,buton_apasat_setari,buton_apasat_alarma;
     initwindow(900,600);
+    setlinestyle(0,1,2);
     deseneazaMeniul();
     deseneazaPaginaSetari();
     setactivepage(paginaMeniului);
@@ -432,6 +543,8 @@ int main()
     do
     {
 
+        hover();
+        verifHover();
 
         butonul_apasat=butonAles();
         if (butonul_apasat!=0)
@@ -442,6 +555,7 @@ int main()
             {
                 cout<<"[INFO]Afisare setari."<<endl;
                 setvisualpage(paginaSetari);
+                deseneazaPaginaSetari();
             }
             while(comanda==1)
             {
@@ -480,6 +594,7 @@ int main()
                 {
                     comanda=10; //numar random doar ca sa iasa din while
                     setvisualpage(paginaMeniului);
+                    setactivepage(paginaMeniului);
                     cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
@@ -487,9 +602,57 @@ int main()
 
             if(comanda==2)
             {
-                cout<<"[INFO]Schimbare tema."<<endl;
+                cout<<"[INFO]Meniu Alarma."<<endl;
+                setvisualpage(paginaAlarma);
+                deseneazaPaginaAlarma();
             }
+            while(comanda==2)
+            {
 
+                buton_apasat_alarma=butonAlesAlarma();
+                if(buton_apasat_alarma!=0)
+                {
+                    if(buton_apasat_alarma==1)
+                    {
+                        if(alarma.ore<23)
+                        alarma.ore++;
+                        cout<<"[INFO]PLUS ORA"<<endl;
+                        deseneazaPaginaAlarma();
+                    }
+                    if(buton_apasat_alarma==2)
+                    {
+                        if(alarma.ore>0)
+                        alarma.ore--;
+                        cout<<"[INFO]MINUS ORA"<<endl;
+                        deseneazaPaginaAlarma();
+                    }
+
+                    if(buton_apasat_alarma==3)
+                    {
+                        if(alarma.minute<60)
+                        alarma.minute++;
+                        cout<<"[INFO]PLUS MINUT"<<endl;
+                        deseneazaPaginaAlarma();
+                    }
+
+                    if(buton_apasat_alarma==4)
+                    {
+                        if(alarma.minute>0)
+                        alarma.minute--;
+                        cout<<"[INFO]MINUS MINUT"<<endl;
+                        deseneazaPaginaAlarma();
+                    }
+                }
+
+                if(intoarcereMeniuPrincipal()!=0)
+                {
+                    comanda=10; //numar random doar ca sa iasa din while
+                    setvisualpage(paginaMeniului);
+                    setactivepage(paginaMeniului);
+                    deseneazaMeniul();
+                    cout<<"[INFO]Intoarcere la meniu."<<endl;
+                }
+            }
             if(comanda==3)
             {
                 if(schimba_24h_to_12h==false)
@@ -500,6 +663,7 @@ int main()
                     iaTimpulLocal();
                     scrieTimpulDigital_24h();
                     setvisualpage(paginaMeniului);
+                    setactivepage(paginaMeniului);
                 }
                 else if(schimba_24h_to_12h==true)
                 {
@@ -509,6 +673,7 @@ int main()
                     iaTimpulLocal();
                     scrieTimpulDigital_12h();
                     setvisualpage(paginaMeniului);
+                    setactivepage(paginaMeniului);
                 }
             }
 
@@ -519,6 +684,7 @@ int main()
                 setvisualpage(paginaCeasAnalogic);
                 deseneazaCeasAnalogic();
                 setvisualpage(paginaMeniului);
+                setactivepage(paginaMeniului);
             }
 
             if(comanda==5)
