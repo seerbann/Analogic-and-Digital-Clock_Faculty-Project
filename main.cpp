@@ -40,6 +40,7 @@ struct Ceas
 } ;
 Ceas ceas;
 Ceas alarma;
+
 struct buton
 {
     bool hovered;
@@ -441,63 +442,34 @@ int butonAlesAlarma()
     }
     return 0;
 }
-
 void deseneazaPaginaAlarma()
 {
-    alarma.ore=0;
-    alarma.minute=0;
-    int k=1;
-    while(k)
+
+    setactivepage(paginaAlarma);
+    setbkcolor(BLACK);
+    cleardevice();
+
+    setcolor(WHITE);
+
+    seteazaStilText;
+    deseneazaCasutaIesire();
+
+
+    seteazaStilText;
+    outstreamxy(220,280);
+    bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"                                                                                                    "<<setw(2)<<setfill('0') <<alarma.minute;
+    seteazaStilTitlu;
+    outtextxy(350,50,"Alarma");
+    for (int i=1; i<=4; i++)
     {
+        B2[i].D.SS.x=200*i-100;
+        B2[i].D.DJ.x=200*i;
+        B2[i].D.SS.y=250;
+        B2[i].D.DJ.y=350;
+        rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
+        bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
+        setbkcolor(LIGHTRED);
 
-        setbkcolor(BLACK);
-        cleardevice();
-
-        setcolor(WHITE);
-
-        seteazaStilText;
-        deseneazaCasutaIesire();
-
-        if(intoarcereMeniuPrincipal()!=0)
-        {
-            k=0;
-            cout<<"[INFO]Intoarcere la meniu."<<endl;
-        }
-
-        seteazaStilText;
-        outstreamxy(220,280);
-        bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"                                                                                                    "<<setw(2)<<setfill('0') <<alarma.minute;
-        seteazaStilTitlu;
-        outtextxy(350,50,"Alarma");
-        for (int i=1; i<=4; i++)
-        {
-            B2[i].D.SS.x=200*i-100;
-            B2[i].D.DJ.x=200*i;
-            B2[i].D.SS.y=250;
-            B2[i].D.DJ.y=350;
-            rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
-            bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
-            setbkcolor(LIGHTRED);
-
-        }
-        int buton=butonAlesAlarma();
-        if(buton!=0)
-        {
-            if(buton==1)
-            {
-                cout<<"PLUS ORA"<<endl;
-                alarma.ore++;
-            }
-            else if(buton==2)
-                cout<<"MINUS ORA"<<endl;
-            else if(buton==3)
-                cout<<"PLUS MINUT"<<endl;
-            else if(buton==4)
-                cout<<"MINUS MINUT"<<endl;
-        }
-
-
-        delay(1000);
     }
 
 }
@@ -621,15 +593,54 @@ int main()
             if(comanda==2)
             {
                 cout<<"[INFO]Meniu Alarma."<<endl;
-
-
                 setvisualpage(paginaAlarma);
                 deseneazaPaginaAlarma();
-                setactivepage(paginaMeniului);
-                setvisualpage(paginaMeniului);
-                deseneazaMeniul();
             }
+            while(comanda==2)
+            {
 
+                buton_apasat_alarma=butonAlesAlarma();
+                if(buton_apasat_alarma!=0)
+                {
+                    if(buton_apasat_alarma==1)
+                    {
+                        alarma.ore++;
+                        cout<<"[INFO]PLUS ORA"<<endl;
+                        deseneazaPaginaAlarma();
+                    }
+                    if(buton_apasat_alarma==2)
+                    {
+                        alarma.ore--;
+                        cout<<"[INFO]MINUS ORA"<<endl;
+                        deseneazaPaginaAlarma();
+                    }
+
+                    if(buton_apasat_alarma==3)
+                    {
+                        alarma.minute++;
+                        cout<<"[INFO]PLUS MINUT"<<endl;
+
+                        deseneazaPaginaAlarma();
+                    }
+
+                    if(buton_apasat_alarma==4)
+                    {
+                        alarma.minute--;
+                        cout<<"[INFO]MINUS MINUT"<<endl;
+
+                        deseneazaPaginaAlarma();
+                    }
+                }
+
+                if(intoarcereMeniuPrincipal()!=0)
+                {
+                    comanda=10; //numar random doar ca sa iasa din while
+                    setvisualpage(paginaMeniului);
+                    setactivepage(paginaMeniului);
+                    deseneazaMeniul();
+                    cout<<"[INFO]Intoarcere la meniu."<<endl;
+                }
+            }
             if(comanda==3)
             {
                 if(schimba_24h_to_12h==false)
