@@ -56,6 +56,7 @@ bool apartine(punct P, dreptunghi D)
 
 buton B[6];
 buton B1[4];
+buton B2[4];
 int nrButoane=5;
 
 void deseneazaMeniul()
@@ -372,7 +373,7 @@ void deseneazaPaginaSetari()
     deseneazaCasutaIesire();
 
     seteazaStilTitlu;
-    outtextxy(370,50,"Setari");
+    outtextxy(350,50,"Setari");
 
     seteazaStilText;
     int i,j;
@@ -435,7 +436,19 @@ void deseneazaPaginaAlarma()
     deseneazaCasutaIesire();
 
     seteazaStilTitlu;
-    outtextxy(370,50,"Alarma");
+    outtextxy(350,50,"Alarma");
+    setfillstyle(SOLID_FILL,LIGHTRED);
+        for (int i=1; i<=4; i++)
+    {
+        B2[i].D.SS.x=200*i-100;
+        B2[i].D.DJ.x=200*i;
+        B2[i].D.SS.y=250;
+        B2[i].D.DJ.y=350;
+       rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
+        bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
+        setbkcolor(LIGHTRED);
+
+    }
     delay(1000);
 
 }
@@ -558,7 +571,6 @@ int main()
             if(comanda==2)
             {
                 cout<<"[INFO]Meniu Alarma."<<endl;
-                setvisualpage(paginaAlarma);
 
             }
             while(comanda==2)
