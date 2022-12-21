@@ -11,6 +11,8 @@
 #define paginaSetari 3
 #define seteazaStilTitlu  settextstyle(1,HORIZ_DIR,5)
 #define seteazaStilText settextstyle(3,HORIZ_DIR,1)
+#define ROMANIA 0
+#define UK 1
 using namespace std;
 
 int regiune=0;
@@ -67,15 +69,15 @@ void deseneazaMeniul()
     {
         B[i].D.SS.x=125*i;
         B[i].D.DJ.x=125*(i+1)-5;
-        B[i].D.SS.y=300;
-        B[i].D.DJ.y=330;
+        B[i].D.SS.y=270;
+        B[i].D.DJ.y=300;
         switch(i)
         {
         case 1:
             strcpy(B[i].text,"Setari");
             break;
         case 2:
-            strcpy(B[i].text,"Sch. Tema");
+            strcpy(B[i].text,"Alarma");
             break;
         case 3:
             strcpy(B[i].text,"Digital");
@@ -118,13 +120,13 @@ void iaTimpulLocal()
 {
     time_t t = time(NULL);
     tm *timePtr = localtime(&t); // ia timpul local al calculatorului
-    if(regiune==0)
+    if(regiune==ROMANIA)
     {
         ceas.secunde = (timePtr->tm_sec);
         ceas.minute = (timePtr->tm_min);
         ceas.ore = (timePtr->tm_hour);
     }
-    if(regiune==1)
+    if(regiune==UK)
     {
         ceas.secunde = (timePtr->tm_sec);
         ceas.minute = (timePtr->tm_min);
