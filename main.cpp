@@ -30,15 +30,16 @@ struct dreptunghi
     punct SS, DJ;
 };
 
-struct
+struct Ceas
 {
     int secunde;
     int minute;
     int ore;
     int zi;
     int luna;
-} ceas;
-
+} ;
+Ceas ceas;
+Ceas alarma;
 struct buton
 {
     bool hovered;
@@ -425,6 +426,8 @@ int butonAlesSetari()
 
 void deseneazaPaginaAlarma()
 {
+    alarma.ore=0;
+    alarma.minute=0;
     int k=1;
     while(k)
     {
@@ -436,6 +439,9 @@ void deseneazaPaginaAlarma()
         seteazaStilText;
         deseneazaCasutaIesire();
 
+        seteazaStilText;
+        outstreamxy(220,280);
+        bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"                                                                                                    "<<setw(2)<<setfill('0') <<alarma.minute;
         seteazaStilTitlu;
         outtextxy(350,50,"Alarma");
 
@@ -450,6 +456,7 @@ void deseneazaPaginaAlarma()
             setbkcolor(LIGHTRED);
 
         }
+
         if(intoarcereMeniuPrincipal()!=0)
         {
             k=0;
