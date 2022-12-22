@@ -313,6 +313,8 @@ void deseneazaCeasAnalogic()
     {
         setbkcolor(BLACK);
         cleardevice();
+        seteazaStilTitlu;
+        outtextxy(250,50,"Ceas analogic");
         seteazaStilText;
         deseneazaCasutaIesire();
         setcolor(WHITE);
