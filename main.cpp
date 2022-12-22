@@ -53,7 +53,25 @@ struct buton
 bool apartine(punct P, dreptunghi D)
 {
     return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
+}
 
+bool apartine_seteaza_alarma(punct P)
+{
+    return 420<=P.x && P.x<=480 && 190<=P.y && P.y<=240;
+}
+
+int seteazaAlarma()
+{
+    punct p1;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p1.x=mousex();
+        p1.y=mousey();
+        if (apartine_seteaza_alarma(p1))
+            return 1;
+    }
+    return 0;
 }
 
 buton B[6];
@@ -313,6 +331,8 @@ void deseneazaCeasAnalogic()
     {
         setbkcolor(BLACK);
         cleardevice();
+        seteazaStilTitlu;
+        outtextxy(250,50,"Ceas analogic");
         seteazaStilText;
         deseneazaCasutaIesire();
         setcolor(WHITE);
@@ -453,11 +473,13 @@ void deseneazaPaginaAlarma()
 
     seteazaStilText;
     deseneazaCasutaIesire();
+    //buton.seteaza
+    rectangle(420,190,480,240);
+    outtextxy(433,205,"SET");
 
-
-    seteazaStilText;
+    settextstyle(0,HORIZ_DIR,3);
     outstreamxy(220,280);
-    bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"                                                                                                    "<<setw(2)<<setfill('0') <<alarma.minute;
+    bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"               "<<setw(2)<<setfill('0') <<alarma.minute;
     seteazaStilTitlu;
     outtextxy(350,50,"Alarma");
     for (int i=1; i<=4; i++)
@@ -469,8 +491,18 @@ void deseneazaPaginaAlarma()
         rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
         bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
         setbkcolor(LIGHTRED);
-
     }
+
+    //plus.ore
+    line(110,300,190,300);
+    line(150,260,150,340);
+    //minus.ore
+    line(310,300,390,300);
+    //plus.minute
+    line(510,300,590,300);
+    line(550,260,550,340);
+    //minus.minute
+    line(710,300,790,300);
 
 }
 
@@ -522,7 +554,8 @@ int verifHover()            //animatie selectare buton meniu
 
 int main()
 {
-
+    alarma.ore=0;
+    alarma.minute=0;
     int comanda, butonul_apasat,buton_apasat_setari,buton_apasat_alarma;
     initwindow(900,600);
     setlinestyle(0,1,2);
@@ -604,12 +637,14 @@ int main()
                 {
                     if(buton_apasat_alarma==1)
                     {
+                        if(alarma.ore<23)
                         alarma.ore++;
                         cout<<"[INFO]PLUS ORA"<<endl;
                         deseneazaPaginaAlarma();
                     }
                     if(buton_apasat_alarma==2)
                     {
+                        if(alarma.ore>0)
                         alarma.ore--;
                         cout<<"[INFO]MINUS ORA"<<endl;
                         deseneazaPaginaAlarma();
@@ -617,21 +652,23 @@ int main()
 
                     if(buton_apasat_alarma==3)
                     {
+                        if(alarma.minute<60)
                         alarma.minute++;
                         cout<<"[INFO]PLUS MINUT"<<endl;
-
                         deseneazaPaginaAlarma();
                     }
 
                     if(buton_apasat_alarma==4)
                     {
+                        if(alarma.minute>0)
                         alarma.minute--;
                         cout<<"[INFO]MINUS MINUT"<<endl;
-
                         deseneazaPaginaAlarma();
                     }
-                }
 
+                }
+                    if(seteazaAlarma()==1)
+                    cout<<"[INFO]Alarma setata."<<endl;
                 if(intoarcereMeniuPrincipal()!=0)
                 {
                     comanda=10; //numar random doar ca sa iasa din while
