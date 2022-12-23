@@ -53,7 +53,25 @@ struct buton
 bool apartine(punct P, dreptunghi D)
 {
     return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
+}
 
+bool apartine_seteaza_alarma(punct P)
+{
+    return 420<=P.x && P.x<=480 && 190<=P.y && P.y<=240;
+}
+
+int seteazaAlarma()
+{
+    punct p1;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p1.x=mousex();
+        p1.y=mousey();
+        if (apartine_seteaza_alarma(p1))
+            return 1;
+    }
+    return 0;
 }
 
 buton B[6];
@@ -455,7 +473,9 @@ void deseneazaPaginaAlarma()
 
     seteazaStilText;
     deseneazaCasutaIesire();
-
+    //buton.seteaza
+    rectangle(420,190,480,240);
+    outtextxy(433,205,"SET");
 
     settextstyle(0,HORIZ_DIR,3);
     outstreamxy(220,280);
@@ -472,6 +492,7 @@ void deseneazaPaginaAlarma()
         bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
         setbkcolor(LIGHTRED);
     }
+
     //plus.ore
     line(110,300,190,300);
     line(150,260,150,340);
@@ -617,14 +638,14 @@ int main()
                     if(buton_apasat_alarma==1)
                     {
                         if(alarma.ore<23)
-                        alarma.ore++;
+                            alarma.ore++;
                         cout<<"[INFO]PLUS ORA"<<endl;
                         deseneazaPaginaAlarma();
                     }
                     if(buton_apasat_alarma==2)
                     {
                         if(alarma.ore>0)
-                        alarma.ore--;
+                            alarma.ore--;
                         cout<<"[INFO]MINUS ORA"<<endl;
                         deseneazaPaginaAlarma();
                     }
@@ -632,7 +653,7 @@ int main()
                     if(buton_apasat_alarma==3)
                     {
                         if(alarma.minute<60)
-                        alarma.minute++;
+                            alarma.minute++;
                         cout<<"[INFO]PLUS MINUT"<<endl;
                         deseneazaPaginaAlarma();
                     }
@@ -640,12 +661,13 @@ int main()
                     if(buton_apasat_alarma==4)
                     {
                         if(alarma.minute>0)
-                        alarma.minute--;
+                            alarma.minute--;
                         cout<<"[INFO]MINUS MINUT"<<endl;
                         deseneazaPaginaAlarma();
                     }
                 }
-
+                if(seteazaAlarma()==1)
+                    cout<<"[INFO]Alarma setata la ora"<<setw(2)<<setfill('0')<<alarma.ore-1<<":"<<setw(2)<<setfill('0')<<alarma.minute-1<<endl;
                 if(intoarcereMeniuPrincipal()!=0)
                 {
                     comanda=10; //numar random doar ca sa iasa din while
@@ -655,6 +677,7 @@ int main()
                     cout<<"[INFO]Intoarcere la meniu."<<endl;
                 }
             }
+
             if(comanda==3)
             {
                 if(schimba_24h_to_12h==false)
