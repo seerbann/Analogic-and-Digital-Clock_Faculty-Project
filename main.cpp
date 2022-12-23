@@ -15,10 +15,12 @@
 #define seteazaStilText settextstyle(3,HORIZ_DIR,1)
 #define ROMANIA 0
 #define UK 1
-using namespace std;
-ofstream fout;
-int regiune=ROMANIA; // initial regiunea este Romania
 
+using namespace std;
+
+ofstream fout;
+
+int regiune=ROMANIA; // initial regiunea este Romania
 bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
 
 struct punct
@@ -50,34 +52,17 @@ struct buton
     int culoare;
     char text[20];
 };
+buton B[6];
+buton B1[4];
+buton B2[4];
 
+
+///Meniu Principal
 bool apartine(punct P, dreptunghi D)
 {
     return D.SS.x<=P.x && P.x<=D.DJ.x && D.SS.y<=P.y && P.y<=D.DJ.y;
 }
 
-bool apartine_seteaza_alarma(punct P)
-{
-    return 420<=P.x && P.x<=480 && 190<=P.y && P.y<=240;
-}
-
-int seteazaAlarma()
-{
-    punct p1;
-    if (ismouseclick(WM_LBUTTONDOWN))
-    {
-        clearmouseclick(WM_LBUTTONDOWN);
-        p1.x=mousex();
-        p1.y=mousey();
-        if (apartine_seteaza_alarma(p1))
-            return 1;
-    }
-    return 0;
-}
-
-buton B[6];
-buton B1[4];
-buton B2[4];
 int nrButoane=5;
 
 void deseneazaMeniul()
@@ -119,8 +104,6 @@ void deseneazaMeniul()
     }
 }
 
-
-
 int butonAles()
 {
     int i;
@@ -139,6 +122,8 @@ int butonAles()
     return 0;
 }
 
+
+///Timp local + regiune
 void iaTimpulLocal()
 {
     time_t t = time(NULL);
@@ -162,6 +147,7 @@ void iaTimpulLocal()
 }
 
 
+///casuta iesire(cea din stanga sus)
 void deseneazaCasutaIesire()
 {
     rectangle(10,10,40,35);
@@ -188,6 +174,7 @@ int intoarcereMeniuPrincipal()
 }
 
 
+///digital 24h
 void scrieTimpulDigital_24h()
 {
     int k=1;
@@ -249,6 +236,8 @@ void scrieTimpulDigital_24h()
     }
 }
 
+
+/// digital 12h
 void scrieTimpulDigital_12h()
 {
     int ok=1;
@@ -325,6 +314,7 @@ void scrieTimpulDigital_12h()
 }
 
 
+///ceas analogic
 void deseneazaCeasAnalogic()
 {
     int k=1;
@@ -377,6 +367,8 @@ void deseneazaCeasAnalogic()
     }
 }
 
+
+///pagina setari
 void deseneazaSageata(int x1,int y1,int x2,int y2)
 {
     line(x1,y1,x2,y2);
@@ -446,6 +438,8 @@ int butonAlesSetari()
     return -1;
 }
 
+
+///alarma
 int butonAlesAlarma()
 {
     int i;
@@ -463,6 +457,26 @@ int butonAlesAlarma()
     }
     return 0;
 }
+
+bool apartine_seteaza_alarma(punct P)
+{
+    return 420<=P.x && P.x<=480 && 190<=P.y && P.y<=240;
+}
+
+int seteazaAlarma()
+{
+    punct p1;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p1.x=mousex();
+        p1.y=mousey();
+        if (apartine_seteaza_alarma(p1))
+            return 1;
+    }
+    return 0;
+}
+
 void deseneazaPaginaAlarma()
 {
 
@@ -483,6 +497,7 @@ void deseneazaPaginaAlarma()
     bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"               "<<setw(2)<<setfill('0') <<alarma.minute;
     seteazaStilTitlu;
     outtextxy(350,50,"Alarma");
+    setcolor(LIGHTRED);
     for (int i=1; i<=4; i++)
     {
         B2[i].D.SS.x=200*i-100;
@@ -491,7 +506,7 @@ void deseneazaPaginaAlarma()
         B2[i].D.DJ.y=350;
         rectangle(B2[i].D.SS.x, B2[i].D.SS.y,B2[i].D.DJ.x,B2[i].D.DJ.y);
         bar(B2[i].D.SS.x, B2[i].D.SS.y, B2[i].D.DJ.x, B2[i].D.SS.y);
-        setbkcolor(LIGHTRED);
+        //setbkcolor(LIGHTRED);
     }
 
     //plus.ore
@@ -507,8 +522,14 @@ void deseneazaPaginaAlarma()
 
 }
 
+void salveazaAlarma(int x,int y)
+{
+    fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
+    fout<<setw(2)<<setfill('0')<<x<<":"<<setw(2)<<setfill('0')<<y<<endl;
+}
 
 
+///animatie meniu principal
 void hover()
 {
     punct p;
@@ -553,11 +574,7 @@ int verifHover()            //animatie selectare buton meniu
 
 }
 
-void salveazaAlarma(int x,int y)
-{
-    fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
-    fout<<setw(2)<<setfill('0')<<x<<":"<<setw(2)<<setfill('0')<<y<<endl;
-}
+
 
 int main()
 {
