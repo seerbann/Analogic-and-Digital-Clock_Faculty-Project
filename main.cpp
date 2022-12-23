@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <winbgim.h>
 #include <stdlib.h>
 #include <ctime>
@@ -15,7 +16,7 @@
 #define ROMANIA 0
 #define UK 1
 using namespace std;
-
+ofstream fout;
 int regiune=ROMANIA; // initial regiunea este Romania
 
 bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
@@ -552,6 +553,12 @@ int verifHover()            //animatie selectare buton meniu
 
 }
 
+void salveazaAlarma(int x,int y)
+{
+    fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
+    fout<<setw(2)<<setfill('0')<<x<<":"<<setw(2)<<setfill('0')<<y<<endl;
+}
+
 int main()
 {
     alarma.ore=0;
@@ -667,7 +674,11 @@ int main()
                     }
                 }
                 if(seteazaAlarma()==1)
-                    cout<<"[INFO]Alarma setata la ora"<<setw(2)<<setfill('0')<<alarma.ore-1<<":"<<setw(2)<<setfill('0')<<alarma.minute-1<<endl;
+                {
+                    salveazaAlarma(alarma.ore,alarma.minute);
+                    cout<<"[INFO]Alarma setata la ora"<<setw(2)<<setfill('0')<<alarma.ore<<":"<<setw(2)<<setfill('0')<<alarma.minute<<endl;
+                }
+
                 if(intoarcereMeniuPrincipal()!=0)
                 {
                     comanda=10; //numar random doar ca sa iasa din while
