@@ -19,6 +19,7 @@
 using namespace std;
 
 ofstream fout;
+ifstream fin("alarme.txt");
 
 int regiune=ROMANIA; // initial regiunea este Romania
 bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
@@ -68,7 +69,7 @@ int nrButoane=5;
 void deseneazaMeniul()
 {
     seteazaStilText;
-    readimagefile("background-unfocused.jpg",0,0,900,600);
+    readimagefile("meniu_principal.jpg",0,0,900,600);
     setcolor(BLACK);
     setfillstyle(SOLID_FILL,LIGHTRED);
 
@@ -182,6 +183,7 @@ void scrieTimpulDigital_24h()
     {
         setbkcolor(BLACK);
         cleardevice(); //sterge consola
+        readimagefile("ceas_d_24.jpg",0,0,900,600);
         setcolor(WHITE);
         seteazaStilText;
         deseneazaCasutaIesire();
@@ -224,9 +226,16 @@ void scrieTimpulDigital_24h()
 
         seteazaStilText;
         if(regiune==0)
-            outtextxy(200,200,"Ceas setat pentru Romania");
+        {
+            outtextxy(100,500,"Ceas setat pentru Romania");
+            outtextxy(100,520,"Format 24h");
+        }
         else if(regiune==1)
-            outtextxy(200,200,"Ceas setat pentru Anglia");
+        {
+            outtextxy(100,500,"Ceas setat pentru Anglia");
+            outtextxy(100,520,"Format 24h");
+        }
+
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
         if(intoarcereMeniuPrincipal()!=0)
         {
@@ -258,6 +267,7 @@ void scrieTimpulDigital_12h()
     {
         setbkcolor(BLACK);
         cleardevice(); //sterge consola
+        readimagefile("ceas_d_12.jpg",0,0,900,600);
         setcolor(WHITE);
         seteazaStilText;
         deseneazaCasutaIesire();
@@ -282,7 +292,7 @@ void scrieTimpulDigital_12h()
         else
             bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
 
-        outstreamxy(290, 270);
+        outstreamxy(250, 270);
         //incrementeaza sec min si ore
         ceas.secunde++;
         if (ceas.secunde >= 60)
@@ -301,9 +311,17 @@ void scrieTimpulDigital_12h()
         }
         seteazaStilText;
         if(regiune==0)
-            outtextxy(200,200,"Ceas setat pentru Romania");
+        {
+            outtextxy(100,500,"Ceas setat pentru Romania");
+            outtextxy(100,520,"Format 12h");
+        }
+
         else if(regiune==1)
-            outtextxy(200,200,"Ceas setat pentru Anglia");
+        {
+            outtextxy(100,500,"Ceas setat pentru Anglia");
+            outtextxy(100,520,"Format 12h");
+        }
+
         delay(1000); // opreste codul timp de 1000 ms(o secunda)
         if(intoarcereMeniuPrincipal()!=0)
         {
@@ -322,8 +340,8 @@ void deseneazaCeasAnalogic()
     {
         setbkcolor(BLACK);
         cleardevice();
+        readimagefile("ceas_a.jpg",0,0,900,600);
         seteazaStilTitlu;
-        outtextxy(250,50,"Ceas analogic");
         seteazaStilText;
         deseneazaCasutaIesire();
         setcolor(WHITE);
@@ -382,13 +400,14 @@ void deseneazaPaginaSetari()
     setbkcolor(BLACK);
     cleardevice();
     setcolor(WHITE);
+    readimagefile("setari.jpg",0,0,900,600);
     setfillstyle(SOLID_FILL,LIGHTRED);
 
     seteazaStilText;
     deseneazaCasutaIesire();
 
     seteazaStilTitlu;
-    outtextxy(350,50,"Setari");
+    //outtextxy(350,50,"Setari");
 
     seteazaStilText;
     int i,j;
@@ -525,7 +544,14 @@ void deseneazaPaginaAlarma()
 void salveazaAlarma(int x,int y)
 {
     fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
-    fout<<setw(2)<<setfill('0')<<x<<":"<<setw(2)<<setfill('0')<<y<<endl;
+    fout<<setw(2)<<setfill('0')<<x<<setw(2)<<setfill('0')<<y<<endl;
+}
+
+void afiseazaAlarme()
+{
+    int x;
+    while(fin>>x)
+        cout<<x<<endl;
 }
 
 
@@ -693,7 +719,7 @@ int main()
                 if(seteazaAlarma()==1)
                 {
                     salveazaAlarma(alarma.ore,alarma.minute);
-                    cout<<"[INFO]Alarma setata la ora"<<setw(2)<<setfill('0')<<alarma.ore<<":"<<setw(2)<<setfill('0')<<alarma.minute<<endl;
+                    cout<<"[INFO]Alarma setata la ora "<<setw(2)<<setfill('0')<<alarma.ore<<":"<<setw(2)<<setfill('0')<<alarma.minute<<endl;
                 }
 
                 if(intoarcereMeniuPrincipal()!=0)
