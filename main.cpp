@@ -5,6 +5,7 @@
 #include <ctime>
 #include <math.h>
 #include <iomanip>
+#include <vector>
 #define PI 3.1415
 #define paginaMeniului 0
 #define paginaCeasDigital 1
@@ -23,6 +24,7 @@ ifstream fin("alarme.txt");
 
 int regiune=ROMANIA; // initial regiunea este Romania
 bool schimba_24h_to_12h=false; //initial , ceasul este de 24 de ore
+vector<int> vector_alarme;
 
 struct punct
 {
@@ -41,6 +43,7 @@ struct Ceas
     int ore;
     int zi;
     int luna;
+    int an;
 } ;
 Ceas ceas;
 Ceas alarma;
@@ -72,6 +75,11 @@ void deseneazaMeniul()
     readimagefile("meniu_principal.jpg",0,0,900,600);
     setcolor(BLACK);
     setfillstyle(SOLID_FILL,LIGHTRED);
+
+    seteazaStilText;
+    outstreamxy(430,550);
+    bgiout<<ceas.zi<<"/"<<ceas.luna<<"/"<<ceas.an;
+
 
     int i;
     for (i=1; i<=nrButoane; i++)
@@ -127,8 +135,9 @@ int butonAles()
 ///Timp local + regiune
 void iaTimpulLocal()
 {
-    time_t t = time(NULL);
+    time_t t = time(NULL); // t este numarul de secunde de la 1 ian 1970 pana azi
     tm *timePtr = localtime(&t); // ia timpul local al calculatorului
+
     if(regiune==ROMANIA)
     {
         ceas.secunde = (timePtr->tm_sec);
@@ -145,8 +154,10 @@ void iaTimpulLocal()
         if(ceas.ore==-1)
             ceas.ore=23;
     }
+    ceas.an=1900+timePtr->tm_year; // timePtr->tm_year = 123
+    ceas.luna=1+timePtr->tm_mon;
+    ceas.zi=timePtr->tm_mday;
 }
-
 
 ///casuta iesire(cea din stanga sus)
 void deseneazaCasutaIesire()
@@ -207,6 +218,7 @@ void scrieTimpulDigital_24h()
             bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " << endl;
 
         outstreamxy(290, 270);
+
         //incrementeaza sec min si ore
         ceas.secunde++;
         if (ceas.secunde >= 60)
@@ -538,20 +550,21 @@ void deseneazaPaginaAlarma()
     line(550,260,550,340);
     //minus.minute
     line(710,300,790,300);
-
+    setvisualpage(paginaAlarma);
+    setactivepage(paginaAlarma);
 }
 
-void salveazaAlarma(int x,int y)
+void salveazaAlarmaInFisier(int x,int y)
 {
     fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
     fout<<setw(2)<<setfill('0')<<x<<setw(2)<<setfill('0')<<y<<endl;
 }
 
-void afiseazaAlarme()
+void salveazaAlarmeinVector()
 {
     int x;
     while(fin>>x)
-        cout<<x<<endl;
+        vector_alarme.push_back(x);
 }
 
 
@@ -609,10 +622,13 @@ int main()
     int comanda, butonul_apasat,buton_apasat_setari,buton_apasat_alarma;
     initwindow(900,600);
     setlinestyle(0,1,2);
+    iaTimpulLocal();
     deseneazaMeniul();
     deseneazaPaginaSetari();
+    salveazaAlarmeinVector();
     setactivepage(paginaMeniului);
-
+    for(int i=0;i<=vector_alarme.size()-1;i++)
+        cout<<vector_alarme[i]<<" ";
     do
     {
 
@@ -718,7 +734,7 @@ int main()
                 }
                 if(seteazaAlarma()==1)
                 {
-                    salveazaAlarma(alarma.ore,alarma.minute);
+                    salveazaAlarmaInFisier(alarma.ore,alarma.minute);
                     cout<<"[INFO]Alarma setata la ora "<<setw(2)<<setfill('0')<<alarma.ore<<":"<<setw(2)<<setfill('0')<<alarma.minute<<endl;
                 }
 
