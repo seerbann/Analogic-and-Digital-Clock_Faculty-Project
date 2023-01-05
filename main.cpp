@@ -81,11 +81,6 @@ void deseneazaMeniul()
     setcolor(BLACK);
     setfillstyle(SOLID_FILL,LIGHTRED);
 
-    seteazaStilText;
-    outstreamxy(430,550);
-    bgiout<<ceas.zi<<"/"<<ceas.luna<<"/"<<ceas.an;
-
-
     int i;
     for (i=1; i<=nrButoane; i++)
     {
@@ -317,6 +312,9 @@ void deseneazaPaginaAlarma()
     rectangle(420,190,480,240);
     outtextxy(433,205,"SET");
 
+    //buton stergere alarme;
+    rectangle(420,370,480,420);
+
     settextstyle(0,HORIZ_DIR,3);
     outstreamxy(220,280);
     bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"               "<<setw(2)<<setfill('0') <<alarma.minute;
@@ -396,6 +394,13 @@ void verificaAlarma()  //functie care porneste alarma
     }
 }
 
+void afiseazaAlarme()
+{
+    cout<<"Alarmele dvs. sunt:"<<endl;
+    for(int i=0;i<=vector_alarme.size()-1;i++)
+        cout<<vector_alarme[i]<<" ";
+    cout<<endl;
+}
 ///digital 24h
     void scrieTimpulDigital_24h()
     {
@@ -585,6 +590,9 @@ void verificaAlarma()  //functie care porneste alarma
             outtextxy(350+180*sin(12*PI/6)-5, 350-180*cos(12*PI/6), "12");
 
             iaTimpulLocal();
+            seteazaStilTitlu;
+            outstreamxy(600,550);
+            bgiout<<ceas.zi<<"/"<<ceas.luna<<"/"<<ceas.an;
 
             //linia pentru ora
 
@@ -669,8 +677,7 @@ void verificaAlarma()  //functie care porneste alarma
         deseneazaPaginaSetari();
         salveazaAlarmeinVector();
         setactivepage(paginaMeniului);
-        for(int i=0; i<=vector_alarme.size()-1; i++)
-            cout<<vector_alarme[i]<<" ";
+
         do
         {
 
@@ -778,6 +785,8 @@ void verificaAlarma()  //functie care porneste alarma
                     {
                         salveazaAlarmaInFisier(alarma.ore,alarma.minute);
                         cout<<"[INFO]Alarma setata la ora "<<setw(2)<<setfill('0')<<alarma.ore<<":"<<setw(2)<<setfill('0')<<alarma.minute<<endl;
+                        vector_alarme.push_back(concat(alarma.ore,alarma.minute));
+                        afiseazaAlarme();
                     }
 
                     if(intoarcereMeniuPrincipal()!=0)
