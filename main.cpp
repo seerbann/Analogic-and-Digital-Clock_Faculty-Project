@@ -6,6 +6,7 @@
 #include <math.h>
 #include <iomanip>
 #include <vector>
+#include <string>
 #define PI 3.1415
 #define paginaMeniului 0
 #define paginaCeasDigital 1
@@ -159,6 +160,7 @@ void iaTimpulLocal()
     ceas.zi=timePtr->tm_mday;
 }
 
+
 ///casuta iesire(cea din stanga sus)
 void deseneazaCasutaIesire()
 {
@@ -183,218 +185,6 @@ int intoarcereMeniuPrincipal()
             return 1;
     }
     return 0;
-}
-
-
-///digital 24h
-void scrieTimpulDigital_24h()
-{
-    int k=1;
-    while (k)
-    {
-        setbkcolor(BLACK);
-        cleardevice(); //sterge consola
-        readimagefile("ceas_d_24.jpg",0,0,900,600);
-        setcolor(WHITE);
-        seteazaStilText;
-        deseneazaCasutaIesire();
-        seteazaStilTitlu;
-        ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
-        if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
-        else if(ceas.minute<10 && ceas.secunde<10)
-            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
-        else if(ceas.ore<10 && ceas.secunde<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
-        else if(ceas.ore<10 && ceas.minute<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " << endl;
-        else if(ceas.ore<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl;
-        else if(ceas.minute<10)
-            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " << ceas.secunde << " " << endl;
-        else if(ceas.secunde<10)
-            bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
-        else
-            bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " << endl;
-
-        outstreamxy(290, 270);
-
-        //incrementeaza sec min si ore
-        ceas.secunde++;
-        if (ceas.secunde >= 60)
-        {
-            ceas.secunde = 1;
-            ceas.minute++;
-        }
-        if (ceas.minute >= 60)
-        {
-            ceas.minute = 0;
-            ceas.ore++;
-        }
-        if (ceas.ore > 24)
-        {
-            ceas.ore= 00;
-        }
-
-        seteazaStilText;
-        if(regiune==0)
-        {
-            outtextxy(100,500,"Ceas setat pentru Romania");
-            outtextxy(100,520,"Format 24h");
-        }
-        else if(regiune==1)
-        {
-            outtextxy(100,500,"Ceas setat pentru Anglia");
-            outtextxy(100,520,"Format 24h");
-        }
-
-        delay(1000); // opreste codul timp de 1000 ms(o secunda)
-        if(intoarcereMeniuPrincipal()!=0)
-        {
-            k=0;
-            cout<<"[INFO]Intoarcere la meniu."<<endl;
-        }
-    }
-}
-
-
-/// digital 12h
-void scrieTimpulDigital_12h()
-{
-    int ok=1;
-    int sw=0;
-    char tip_ceas[3];
-
-    if(ceas.ore>=13)
-    {
-        ceas.ore=ceas.ore-12;
-        strcpy(tip_ceas,"PM");
-    }
-    else
-    {
-        strcpy(tip_ceas,"AM");
-    }
-
-    while (ok)
-    {
-        setbkcolor(BLACK);
-        cleardevice(); //sterge consola
-        readimagefile("ceas_d_12.jpg",0,0,900,600);
-        setcolor(WHITE);
-        seteazaStilText;
-        deseneazaCasutaIesire();
-        seteazaStilTitlu;
-
-
-        ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
-        if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " "<<tip_ceas<< endl;
-        else if(ceas.minute<10 && ceas.secunde<10)
-            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<< endl;
-        else if(ceas.ore<10 && ceas.secunde<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<< endl;
-        else if(ceas.ore<10 && ceas.minute<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
-        else if(ceas.ore<10)
-            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
-        else if(ceas.minute<10)
-            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<<endl;
-        else if(ceas.secunde<10)
-            bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<<endl;
-        else
-            bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
-
-        outstreamxy(250, 270);
-        //incrementeaza sec min si ore
-        ceas.secunde++;
-        if (ceas.secunde >= 60)
-        {
-            ceas.secunde = 1;
-            ceas.minute++;
-        }
-        if (ceas.minute >= 60)
-        {
-            ceas.minute = 0;
-            ceas.ore++;
-        }
-        if (ceas.ore > 24)
-        {
-            ceas.ore= 00;
-        }
-        seteazaStilText;
-        if(regiune==0)
-        {
-            outtextxy(100,500,"Ceas setat pentru Romania");
-            outtextxy(100,520,"Format 12h");
-        }
-
-        else if(regiune==1)
-        {
-            outtextxy(100,500,"Ceas setat pentru Anglia");
-            outtextxy(100,520,"Format 12h");
-        }
-
-        delay(1000); // opreste codul timp de 1000 ms(o secunda)
-        if(intoarcereMeniuPrincipal()!=0)
-        {
-            ok=0;
-            cout<<"[INFO]Intoarcere la meniu."<<endl;
-        }
-    }
-}
-
-
-///ceas analogic
-void deseneazaCeasAnalogic()
-{
-    int k=1;
-    while(k)
-    {
-        setbkcolor(BLACK);
-        cleardevice();
-        readimagefile("ceas_a.jpg",0,0,900,600);
-        seteazaStilTitlu;
-        seteazaStilText;
-        deseneazaCasutaIesire();
-        setcolor(WHITE);
-        circle(350,350,200);
-        circle(350,350,5);
-        outtextxy(350+180*sin(PI/6)-5, 350-180*cos(PI/6), "1");
-        outtextxy(350+180*sin(2*PI/6)-5, 350-180*cos(2*PI/6), "2");
-        outtextxy(350+180*sin(3*PI/6)-5, 350-180*cos(3*PI/6), "3");
-        outtextxy(350+180*sin(4*PI/6)-5, 350-180*cos(4*PI/6), "4");
-        outtextxy(350+180*sin(5*PI/6)-5, 350-180*cos(5*PI/6), "5");
-        outtextxy(350+180*sin(6*PI/6)-5, 350-180*cos(6*PI/6), "6");
-        outtextxy(350+180*sin(7*PI/6)-5, 350-180*cos(7*PI/6), "7");
-        outtextxy(350+180*sin(8*PI/6)-5, 350-180*cos(8*PI/6), "8");
-        outtextxy(350+180*sin(9*PI/6)-5, 350-180*cos(9*PI/6), "9");
-        outtextxy(350+180*sin(10*PI/6)-5, 350-180*cos(10*PI/6), "10");
-        outtextxy(350+180*sin(11*PI/6)-5, 350-180*cos(11*PI/6), "11");
-        outtextxy(350+180*sin(12*PI/6)-5, 350-180*cos(12*PI/6), "12");
-
-        iaTimpulLocal();
-
-        //linia pentru ora
-
-        setcolor(RED);
-        line(350,350,350+150*sin(ceas.ore*PI/6),350-150*cos(ceas.ore*PI/6));
-
-        //linia pentru minute
-
-        setcolor(GREEN);
-        line(350,350,350+190*sin(ceas.minute*PI/30),350-190*cos(ceas.minute*PI/30));
-
-        //linia pentru secunde
-
-        setcolor(WHITE);
-        line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
-        delay(1000);
-        if(intoarcereMeniuPrincipal()!=0)
-        {
-            k=0;
-            cout<<"[INFO]Intoarcere la meniu."<<endl;
-        }
-    }
 }
 
 
@@ -557,14 +347,261 @@ void deseneazaPaginaAlarma()
 void salveazaAlarmaInFisier(int x,int y)
 {
     fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
-    fout<<setw(2)<<setfill('0')<<x<<setw(2)<<setfill('0')<<y<<endl;
+    fout<<setw(2)<<setfill('0')<<x<<setw(1)<<setfill('0')<<y<<endl;
 }
 
 void salveazaAlarmeinVector()
 {
     int x;
     while(fin>>x)
-        vector_alarme.push_back(x);
+    {
+    vector_alarme.push_back(x);
+    }
+
+}
+
+int concat(int a, int b)  //concateneaza 2 integers intr-unu. ex: a=12,b=43 returneaza 1243
+{
+
+    // Convert both the integers to string
+    string s1 = to_string(a);
+    string s2 = to_string(b);
+
+    // Concatenate both strings
+    string s = s1 + s2;
+
+    // Convert the concatenated string
+    // to integer
+    int c = stoi(s);
+
+    // return the formed integer
+    return c;
+}
+
+void verificaAlarma()  //functie care porneste alarma
+{
+    for(int i=0;i<=vector_alarme.size()-1;i++)
+    {
+        if(vector_alarme[i]==concat(ceas.ore,ceas.minute))
+            //pornire alarma
+            cout<<"ALAAAAAAAAAARMAAAAA"<<endl;
+    }
+}
+
+
+///digital 24h
+void scrieTimpulDigital_24h()
+{
+    int k=1;
+    while (k)
+    {
+        setbkcolor(BLACK);
+        cleardevice(); //sterge consola
+        readimagefile("ceas_d_24.jpg",0,0,900,600);
+        setcolor(WHITE);
+        seteazaStilText;
+        deseneazaCasutaIesire();
+        seteazaStilTitlu;
+        ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
+        if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else if(ceas.minute<10 && ceas.secunde<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else if(ceas.ore<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else if(ceas.ore<10 && ceas.minute<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " << endl;
+        else if(ceas.ore<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " << endl;
+        else if(ceas.minute<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " << ceas.secunde << " " << endl;
+        else if(ceas.secunde<10)
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
+        else
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " << endl;
+
+        outstreamxy(290, 270);
+
+        //incrementeaza sec min si ore
+        ceas.secunde++;
+        if (ceas.secunde >= 60)
+        {
+            ceas.secunde = 1;
+            ceas.minute++;
+        }
+        if (ceas.minute >= 60)
+        {
+            ceas.minute = 0;
+            ceas.ore++;
+        }
+        if (ceas.ore > 24)
+        {
+            ceas.ore= 00;
+        }
+
+        verificaAlarma();
+
+        seteazaStilText;
+        if(regiune==0)
+        {
+            outtextxy(100,500,"Ceas setat pentru Romania");
+            outtextxy(100,520,"Format 24h");
+        }
+        else if(regiune==1)
+        {
+            outtextxy(100,500,"Ceas setat pentru Anglia");
+            outtextxy(100,520,"Format 24h");
+        }
+
+        delay(1000); // opreste codul timp de 1000 ms(o secunda)
+        if(intoarcereMeniuPrincipal()!=0)
+        {
+            k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+    }
+}
+
+
+/// digital 12h
+void scrieTimpulDigital_12h()
+{
+    int ok=1;
+    int sw=0;
+    char tip_ceas[3];
+
+    if(ceas.ore>=13)
+    {
+        ceas.ore=ceas.ore-12;
+        strcpy(tip_ceas,"PM");
+    }
+    else
+    {
+        strcpy(tip_ceas,"AM");
+    }
+
+    while (ok)
+    {
+        setbkcolor(BLACK);
+        cleardevice(); //sterge consola
+        readimagefile("ceas_d_12.jpg",0,0,900,600);
+        setcolor(WHITE);
+        seteazaStilText;
+        deseneazaCasutaIesire();
+        seteazaStilTitlu;
+
+
+        ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
+        if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " "<<tip_ceas<< endl;
+        else if(ceas.minute<10 && ceas.secunde<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.ore<10 && ceas.secunde<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.ore<10 && ceas.minute<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.ore<10)
+            bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " << ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+        else if(ceas.minute<10)
+            bgiout <<ceas.ore << " : " <<setw(2)<<setfill('0') <<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<<endl;
+        else if(ceas.secunde<10)
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<<endl;
+        else
+            bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+
+        outstreamxy(250, 270);
+        //incrementeaza sec min si ore
+        ceas.secunde++;
+        if (ceas.secunde >= 60)
+        {
+            ceas.secunde = 1;
+            ceas.minute++;
+        }
+        if (ceas.minute >= 60)
+        {
+            ceas.minute = 0;
+            ceas.ore++;
+        }
+        if (ceas.ore > 24)
+        {
+            ceas.ore= 00;
+        }
+        seteazaStilText;
+        if(regiune==0)
+        {
+            outtextxy(100,500,"Ceas setat pentru Romania");
+            outtextxy(100,520,"Format 12h");
+        }
+
+        else if(regiune==1)
+        {
+            outtextxy(100,500,"Ceas setat pentru Anglia");
+            outtextxy(100,520,"Format 12h");
+        }
+
+        verificaAlarma();
+
+        delay(1000); // opreste codul timp de 1000 ms(o secunda)
+        if(intoarcereMeniuPrincipal()!=0)
+        {
+            ok=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+    }
+}
+
+
+///ceas analogic
+void deseneazaCeasAnalogic()
+{
+    int k=1;
+    while(k)
+    {
+        setbkcolor(BLACK);
+        cleardevice();
+        readimagefile("ceas_a.jpg",0,0,900,600);
+        seteazaStilTitlu;
+        seteazaStilText;
+        deseneazaCasutaIesire();
+        setcolor(WHITE);
+        circle(350,350,200);
+        circle(350,350,5);
+        outtextxy(350+180*sin(PI/6)-5, 350-180*cos(PI/6), "1");
+        outtextxy(350+180*sin(2*PI/6)-5, 350-180*cos(2*PI/6), "2");
+        outtextxy(350+180*sin(3*PI/6)-5, 350-180*cos(3*PI/6), "3");
+        outtextxy(350+180*sin(4*PI/6)-5, 350-180*cos(4*PI/6), "4");
+        outtextxy(350+180*sin(5*PI/6)-5, 350-180*cos(5*PI/6), "5");
+        outtextxy(350+180*sin(6*PI/6)-5, 350-180*cos(6*PI/6), "6");
+        outtextxy(350+180*sin(7*PI/6)-5, 350-180*cos(7*PI/6), "7");
+        outtextxy(350+180*sin(8*PI/6)-5, 350-180*cos(8*PI/6), "8");
+        outtextxy(350+180*sin(9*PI/6)-5, 350-180*cos(9*PI/6), "9");
+        outtextxy(350+180*sin(10*PI/6)-5, 350-180*cos(10*PI/6), "10");
+        outtextxy(350+180*sin(11*PI/6)-5, 350-180*cos(11*PI/6), "11");
+        outtextxy(350+180*sin(12*PI/6)-5, 350-180*cos(12*PI/6), "12");
+
+        iaTimpulLocal();
+
+        //linia pentru ora
+
+        setcolor(RED);
+        line(350,350,350+150*sin(ceas.ore*PI/6),350-150*cos(ceas.ore*PI/6));
+
+        //linia pentru minute
+
+        setcolor(GREEN);
+        line(350,350,350+190*sin(ceas.minute*PI/30),350-190*cos(ceas.minute*PI/30));
+
+        //linia pentru secunde
+
+        setcolor(WHITE);
+        line(350,350,350+150*sin(ceas.secunde*PI/30),350-150*cos(ceas.secunde*PI/30));
+        delay(1000);
+        if(intoarcereMeniuPrincipal()!=0)
+        {
+            k=0;
+            cout<<"[INFO]Intoarcere la meniu."<<endl;
+        }
+    }
 }
 
 
