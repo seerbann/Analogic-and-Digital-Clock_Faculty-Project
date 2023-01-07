@@ -1,3 +1,6 @@
+///Project->Build options->Linker settings
+///Select "Add", enter the lib filename (libwinmm.a) and select OK
+///biblioteca pentru sunet^
 #include <iostream>
 #include <fstream>
 #include <winbgim.h>
