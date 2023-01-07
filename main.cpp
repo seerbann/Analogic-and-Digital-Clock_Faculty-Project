@@ -1,6 +1,3 @@
-///Project->Build options->Linker settings
-///Select "Add", enter the lib filename (libwinmm.a) and select OK
-///biblioteca pentru sunet^
 #include <iostream>
 #include <fstream>
 #include <winbgim.h>
@@ -79,7 +76,7 @@ void deseneazaMeniul()
     seteazaStilText;
     readimagefile("meniu_principal.jpg",0,0,900,600);
     setcolor(BLACK);
-    setfillstyle(SOLID_FILL,LIGHTRED);
+    setfillstyle(SOLID_FILL,WHITE);
 
     int i;
     for (i=1; i<=nrButoane; i++)
@@ -108,7 +105,7 @@ void deseneazaMeniul()
         }
         rectangle(B[i].D.SS.x, B[i].D.SS.y,B[i].D.DJ.x,B[i].D.DJ.y);
         bar(B[i].D.SS.x, B[i].D.SS.y+30, B[i].D.DJ.x, B[i].D.SS.y);
-        setbkcolor(LIGHTRED);
+        setbkcolor(WHITE);
         outtextxy(B[i].D.SS.x+35,B[i].D.SS.y+10,B[i].text);
     }
 }
@@ -190,6 +187,7 @@ int intoarcereMeniuPrincipal()
 ///pagina setari
 void deseneazaSageata(int x1,int y1,int x2,int y2)
 {
+    setcolor(WHITE);
     line(x1,y1,x2,y2);
     line(x1,y1,x2-15,y2-5);
     line(x1,y1,x2-15,y2+5);
@@ -200,15 +198,13 @@ void deseneazaPaginaSetari()
     setactivepage(paginaSetari);
     setbkcolor(BLACK);
     cleardevice();
-    setcolor(WHITE);
+    setcolor(BLACK);
     readimagefile("setari.jpg",0,0,900,600);
-    setfillstyle(SOLID_FILL,LIGHTRED);
+    setfillstyle(SOLID_FILL,WHITE);
 
+    setcolor(WHITE);
     seteazaStilText;
     deseneazaCasutaIesire();
-
-    seteazaStilTitlu;
-    //outtextxy(350,50,"Setari");
 
     seteazaStilText;
     int i,j;
@@ -223,7 +219,7 @@ void deseneazaPaginaSetari()
         //bar draws a filled-in, rectangular, two-dimensional bar.
         //The bar is filled using the current fill pattern and fill color. bar does not outline the bar
         ///deci e ca un dreptunghi doar ca pot sa il stilizezi
-        setbkcolor(LIGHTRED);
+        setbkcolor(WHITE);
     }
     if(regiune==0)
         deseneazaSageata(550,275,570,275);
@@ -233,6 +229,7 @@ void deseneazaPaginaSetari()
         deseneazaSageata(550,375,570,375);
     if(schimba_24h_to_12h==false)
         deseneazaSageata(550,475,570,475);
+    setcolor(BLACK);
     outtextxy(412,170,"Anglia");
     outtextxy(412,270,"Romania");
     outtextxy(412,370,"Format 12h");
@@ -307,6 +304,7 @@ void deseneazaPaginaAlarma()
     setcolor(WHITE);
 
     seteazaStilText;
+    readimagefile("alarma.jpg",0,0,900,600);
     deseneazaCasutaIesire();
     //buton.seteaza
     rectangle(420,190,480,240);
@@ -319,8 +317,7 @@ void deseneazaPaginaAlarma()
     outstreamxy(220,280);
     bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"               "<<setw(2)<<setfill('0') <<alarma.minute;
     seteazaStilTitlu;
-    outtextxy(350,50,"Alarma");
-    setcolor(LIGHTRED);
+    setcolor(WHITE);
     for (int i=1; i<=4; i++)
     {
         B2[i].D.SS.x=200*i-100;
@@ -409,11 +406,11 @@ void afiseazaAlarme()
         {
             setbkcolor(BLACK);
             cleardevice(); //sterge consola
-            readimagefile("ceas_d_24.jpg",0,0,900,600);
+            readimagefile("ceas_d.jpg",0,0,900,600);
             setcolor(WHITE);
             seteazaStilText;
             deseneazaCasutaIesire();
-            seteazaStilTitlu;
+            settextstyle(3,HORIZ_DIR,5);
             ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
             if(ceas.ore<10 && ceas.minute<10 && ceas.secunde<10)
                 bgiout <<setw(2)<<setfill('0')<< ceas.ore << " : " <<setw(2)<<setfill('0')<< ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " << endl;
@@ -496,11 +493,11 @@ void afiseazaAlarme()
         {
             setbkcolor(BLACK);
             cleardevice(); //sterge consola
-            readimagefile("ceas_d_12.jpg",0,0,900,600);
+            readimagefile("ceas_d.jpg",0,0,900,600);
             setcolor(WHITE);
             seteazaStilText;
             deseneazaCasutaIesire();
-            seteazaStilTitlu;
+            settextstyle(3,HORIZ_DIR,5);
 
 
             ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
