@@ -190,10 +190,11 @@ int intoarcereMeniuPrincipal()
 ///pagina setari
 void stergereFolderAlarme()
 {
+    fin.close();
     if (remove("alarme.txt") == 0)
-      printf("Stergerea a avut loc cu succes.");
+      cout<<"Stergerea a avut loc cu succes."<<endl;
    else
-      printf("Nu s-a putut sterge.");
+      cout<<"Nu s-a putut sterge."<<endl;
 
 }
 void deseneazaSageata(int x1,int y1,int x2,int y2)
@@ -380,6 +381,7 @@ void salveazaAlarmaInFisier(int x,int y)
 {
     fout.open("alarme.txt", ios::app); // deschide fisierul in mod de adaugare
     fout<<setw(2)<<setfill('0')<<x<<setw(1)<<setfill('0')<<y<<endl;
+    fout.close();
 }
 
 void salveazaAlarmeinVector()
