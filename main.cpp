@@ -297,7 +297,7 @@ int seteazaAlarma()
     return 0;
 }
 
-void deseneazaPaginaAlarma()
+void deseneazaPaginaAlarma(int &a,int &b)
 {
 
     setactivepage(paginaAlarma);
@@ -318,7 +318,7 @@ void deseneazaPaginaAlarma()
 
     settextstyle(0,HORIZ_DIR,3);
     outstreamxy(220,280);
-    bgiout<<setw(2)<<setfill('0')<<alarma.ore<<"               "<<setw(2)<<setfill('0') <<alarma.minute;
+    bgiout<<setw(2)<<setfill('0')<<a<<"               "<<setw(2)<<setfill('0') <<b;
     seteazaStilTitlu;
     setcolor(WHITE);
     for (int i=1; i<=4; i++)
@@ -742,7 +742,7 @@ void afiseazaAlarme()
                 {
                     cout<<"[INFO]Meniu Alarma."<<endl;
                     setvisualpage(paginaAlarma);
-                    deseneazaPaginaAlarma();
+                    deseneazaPaginaAlarma(alarma.ore,alarma.minute);
                 }
                 while(comanda==2)
                 {
@@ -755,14 +755,14 @@ void afiseazaAlarme()
                             if(alarma.ore<23)
                                 alarma.ore++;
                             cout<<"[INFO]PLUS ORA"<<endl;
-                            deseneazaPaginaAlarma();
+                            deseneazaPaginaAlarma(alarma.ore,alarma.minute);
                         }
                         if(buton_apasat_alarma==2)
                         {
                             if(alarma.ore>0)
                                 alarma.ore--;
                             cout<<"[INFO]MINUS ORA"<<endl;
-                            deseneazaPaginaAlarma();
+                            deseneazaPaginaAlarma(alarma.ore,alarma.minute);
                         }
 
                         if(buton_apasat_alarma==3)
@@ -770,7 +770,7 @@ void afiseazaAlarme()
                             if(alarma.minute<60)
                                 alarma.minute++;
                             cout<<"[INFO]PLUS MINUT"<<endl;
-                            deseneazaPaginaAlarma();
+                            deseneazaPaginaAlarma(alarma.ore,alarma.minute);
                         }
 
                         if(buton_apasat_alarma==4)
@@ -778,7 +778,7 @@ void afiseazaAlarme()
                             if(alarma.minute>0)
                                 alarma.minute--;
                             cout<<"[INFO]MINUS MINUT"<<endl;
-                            deseneazaPaginaAlarma();
+                            deseneazaPaginaAlarma(alarma.ore,alarma.minute);
                         }
                     }
                     if(seteazaAlarma()==1)
