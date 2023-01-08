@@ -242,10 +242,10 @@ void deseneazaPaginaSetari()
     if(schimba_24h_to_12h==false)
         deseneazaSageata(550,475,570,475);
     setcolor(BLACK);
-    outtextxy(412,170,"Anglia");
-    outtextxy(412,270,"Romania");
-    outtextxy(412,370,"Format 12h");
-    outtextxy(412,470,"Format 24h");
+    outtextxy(425,165,"Anglia");
+    outtextxy(415,265,"Romania");
+    outtextxy(412,365,"Format 12h");
+    outtextxy(412,465,"Format 24h");
 }
 
 int butonAlesSetari()
@@ -262,7 +262,6 @@ int butonAlesSetari()
             {
                 return j;
             }
-
     }
     return -1;
 }
@@ -397,18 +396,15 @@ void salveazaAlarmeinVector()
 int concat(int a, int b)  //concateneaza 2 integers intr-unu. ex: a=12,b=43 returneaza 1243
 {
 
-    // Convert both the integers to string
+    // convert integers in string
     string s1 = to_string(a);
     string s2 = to_string(b);
 
-    // Concatenate both strings
+    // concatenarea celor 2 stringuri
     string s = s1 + s2;
 
-    // Convert the concatenated string
-    // to integer
+    // convertirea lui s din string in integer
     int c = stoi(s);
-
-    // return the formed integer
     return c;
 }
 
@@ -419,7 +415,7 @@ void verificaAlarma()  //functie care porneste alarma
         if(vector_alarme[i]==concat(ceas.ore,ceas.minute) && OK==0)
         {
             PlaySound(TEXT("alarma.wav"), NULL, SND_FILENAME);
-            cout<<"ALAAAAAAAAAARMAAAAA"<<endl;
+            cout<<"[INFO]Alarma!!!"<<endl;
             OK=1;
             ceas.secunde+=7; //pentru ca alarma dureaza 5 secunde
         }
