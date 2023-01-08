@@ -188,6 +188,14 @@ int intoarcereMeniuPrincipal()
 
 
 ///pagina setari
+void stergereFolderAlarme()
+{
+    if (remove("alarme.txt") == 0)
+      printf("Stergerea a avut loc cu succes.");
+   else
+      printf("Nu s-a putut sterge.");
+
+}
 void deseneazaSageata(int x1,int y1,int x2,int y2)
 {
     setcolor(WHITE);
@@ -283,6 +291,11 @@ bool apartine_seteaza_alarma(punct P)
     return 420<=P.x && P.x<=480 && 190<=P.y && P.y<=240;
 }
 
+bool apartine_sterge_alarme(punct P)
+{
+    return 410<=P.x && P.x<=490 && 370<=P.y && P.y<=430;
+}
+
 int seteazaAlarma()
 {
     punct p1;
@@ -296,6 +309,21 @@ int seteazaAlarma()
     }
     return 0;
 }
+
+int stergeAlarma()
+{
+    punct p1;
+    if (ismouseclick(WM_LBUTTONDOWN))
+    {
+        clearmouseclick(WM_LBUTTONDOWN);
+        p1.x=mousex();
+        p1.y=mousey();
+        if (apartine_sterge_alarme(p1))
+            return 1;
+    }
+    return 0;
+}
+
 
 void deseneazaPaginaAlarma(int &a,int &b)
 {
@@ -314,7 +342,9 @@ void deseneazaPaginaAlarma(int &a,int &b)
     outtextxy(433,205,"SET");
 
     //buton stergere alarme;
-    rectangle(420,370,480,420);
+    rectangle(410,370,490,430);
+    outtextxy(417,380,"STERGE");
+    outtextxy(417,400,"ALARME");
 
     settextstyle(0,HORIZ_DIR,3);
     outstreamxy(220,280);
@@ -787,6 +817,12 @@ void afiseazaAlarme()
                         cout<<"[INFO]Alarma setata la ora "<<setw(2)<<setfill('0')<<alarma.ore<<":"<<setw(2)<<setfill('0')<<alarma.minute<<endl;
                         vector_alarme.push_back(concat(alarma.ore,alarma.minute));
                         afiseazaAlarme();
+                    }
+
+                    if(stergeAlarma()==1)
+                    {
+                        stergereFolderAlarme();
+                        vector_alarme.clear();
                     }
 
                     if(intoarcereMeniuPrincipal()!=0)
