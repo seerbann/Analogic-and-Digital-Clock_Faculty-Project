@@ -497,6 +497,7 @@ void afiseazaAlarme()
             if(intoarcereMeniuPrincipal()!=0)
             {
                 k=0;
+                OK=0;
                 cout<<"[INFO]Intoarcere la meniu."<<endl;
             }
         }
@@ -528,7 +529,8 @@ void afiseazaAlarme()
             setcolor(WHITE);
             seteazaStilText;
             deseneazaCasutaIesire();
-            settextstyle(3,HORIZ_DIR,5);
+            settextstyle(3,HORIZ_DIR,4);
+
 
 
             ///tratarea fiecarui caz in parte pentru a se afisa acel '0' in fata orei in caz ca aceasta este mai mica decat 10
@@ -548,8 +550,8 @@ void afiseazaAlarme()
                 bgiout << ceas.ore << " : "<<ceas.minute << " : " <<setw(2)<<setfill('0')<< ceas.secunde << " " <<tip_ceas<<endl;
             else
                 bgiout << ceas.ore << " : "<<ceas.minute << " : " << ceas.secunde << " " <<tip_ceas<< endl;
+            outstreamxy(290,270);
 
-            outstreamxy(250, 270);
             //incrementeaza sec min si ore
             ceas.secunde++;
             if (ceas.secunde >= 60)
