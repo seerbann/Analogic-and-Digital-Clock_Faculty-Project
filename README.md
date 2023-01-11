@@ -1,13 +1,14 @@
+
 # Analogic-and-Digital-Clock
 
 ## About  
  Simple clock program written in ***C++*** with a simple graphic library (Borland Graphics Interface).
 ### Features
-* integrated menu
-* Digital CLock
-* alarm
-* posibility of changing the time zone
-* posibility  of changing the time format (24 hour to 12 hour)
+* Integrated Menu
+* Digital Clock & Analogic Clock
+* Alarm
+* 2 Time Zones
+* 2 Time Formats (24h & 12h)
 
 ### What I've learned
 * how to manage a large project using clean code
@@ -26,5 +27,3 @@
 
 ##### Analogic Clock
  ![alt text](https://github.com/seerbann/Analogic-and-Digital-Clock_Faculty-Project/blob/main/examples/ceas%20analogic%20final.png)
- 
- 
