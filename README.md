@@ -4,8 +4,11 @@
  Simple clock program written in C++ with a simple graphic library (Borland Graphics Interface).
 ### Features
 * integrated menu
+* alarm
 * posibility of an analogic display and a digital one
 * posibility of changing the time zone
+* posibility  of changing the time format (24 hour to 12 hour)
+
 
 #### Images
 
