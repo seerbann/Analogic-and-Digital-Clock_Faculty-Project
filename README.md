@@ -11,7 +11,8 @@
 
 
 #### Images
-
+##### Digital Clock
 ![alt text](https://github.com/seerbann/Analogic-and-Digital-Clock_Faculty-Project/blob/main/examples/ceas%20digital%20final.png)
 
-
+##### Analogic Clock
+ ![alt text](https://github.com/seerbann/Analogic-and-Digital-Clock_Faculty-Project/blob/main/examples/ceas%20analogic%20final.png)
